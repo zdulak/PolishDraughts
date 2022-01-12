@@ -1,5 +1,3 @@
-using PolishDraughts.Core.Entities.Games;
-
 namespace PolishDraughts.Presentation
 {
     internal class Program

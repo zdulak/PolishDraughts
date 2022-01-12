@@ -3,15 +3,16 @@ using System.Linq;
 using PolishDraughts.Core.Entities.Boards;
 using PolishDraughts.Core.Entities.Players;
 using PolishDraughts.Core.Enums;
+using PolishDraughts.Core.Interfaces;
 
 namespace PolishDraughts.Core.Entities.Games
 {
-    public class Game
+    public class Game : IGame
     {
-        private readonly View _view;
+        private readonly IView _view;
         private readonly Player[] _players;
-        private readonly Board _board;
-        public Game(View view, Board board, Player[] players)
+        private readonly IBoard _board;
+        public Game(IView view, IBoard board, Player[] players)
         {
             _view = view;
             _board = board;
