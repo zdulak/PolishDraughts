@@ -1,8 +1,11 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using PolishDraughts.Core.Entities.Boards;
+using PolishDraughts.Core.Entities.Pieces;
+using PolishDraughts.Core.Entities.Positions;
+using PolishDraughts.Core.Enums;
 
-namespace PolishDraughts
+namespace PolishDraughts.Presentation
 {
     public class View
     {

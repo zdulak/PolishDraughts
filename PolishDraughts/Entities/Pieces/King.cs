@@ -1,8 +1,7 @@
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using static System.Math;
+using PolishDraughts.Core.Entities.Positions;
+using PolishDraughts.Core.Enums;
 
-namespace PolishDraughts
+namespace PolishDraughts.Core.Entities.Pieces
 {
     public class King : Piece
     {

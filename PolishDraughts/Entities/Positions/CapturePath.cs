@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace PolishDraughts
+namespace PolishDraughts.Core.Entities.Positions
 {
     public class CapturePath
     {

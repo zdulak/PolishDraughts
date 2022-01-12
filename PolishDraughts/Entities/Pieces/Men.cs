@@ -1,8 +1,8 @@
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
+using PolishDraughts.Core.Entities.Positions;
+using PolishDraughts.Core.Enums;
 
-namespace PolishDraughts
+namespace PolishDraughts.Core.Entities.Pieces
 {
     public class Men : Piece
     {

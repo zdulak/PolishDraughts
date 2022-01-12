@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using PolishDraughts.Core.Entities.Positions;
 
-namespace PolishDraughts
+namespace PolishDraughts.Presentation
 {
     public class Controller
     {

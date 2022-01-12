@@ -1,7 +1,8 @@
 using System;
+using PolishDraughts.Core.Entities.Boards;
 using static System.Math;
 
-namespace PolishDraughts
+namespace PolishDraughts.Core.Entities.Positions
 {
     public readonly struct Position
     {

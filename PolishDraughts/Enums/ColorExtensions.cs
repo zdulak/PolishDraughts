@@ -1,6 +1,6 @@
 using System;
 
-namespace PolishDraughts
+namespace PolishDraughts.Core.Enums
 {
     public static class ColorExtensions
     {
