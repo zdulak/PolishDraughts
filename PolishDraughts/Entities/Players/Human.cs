@@ -1,15 +1,15 @@
 using System.Collections.Generic;
-using PolishDraughts.Core.Entities.Boards;
 using PolishDraughts.Core.Entities.Positions;
 using PolishDraughts.Core.Enums;
+using PolishDraughts.Core.Interfaces;
 
 namespace PolishDraughts.Core.Entities.Players
 {
     public class Human : Player
     {
-        private readonly Controller _controller;
+        private readonly IController _controller;
 
-        public Human(Board board, Color color, Controller controller) : base(board, color)
+        public Human(IBoard board, Color color, IController controller) : base(board, color)
         {
             _controller = controller;
         }
