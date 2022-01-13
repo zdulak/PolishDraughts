@@ -1,19 +1,17 @@
 using System;
 using PolishDraughts.Core.Entities.Boards;
-using PolishDraughts.Core.Entities.Games;
 using PolishDraughts.Core.Entities.Players;
 using PolishDraughts.Core.Enums;
-using PolishDraughts.Core.Interfaces;
 
-namespace PolishDraughts.Presentation
+namespace PolishDraughts.Core.Entities.Games
 {
     // Do not confuse the following code with the factory design pattern.
     // See https://refactoring.guru/design-patterns/factory-comparison
     public class GameFactory
     {
-        private readonly IView _view;
+        private readonly View _view;
         private Board _board;
-        private IController _controller;
+        private Controller _controller;
 
         public GameFactory() => _view = new View();
 

@@ -4,11 +4,10 @@ using PolishDraughts.Core.Entities.Boards;
 using PolishDraughts.Core.Entities.Pieces;
 using PolishDraughts.Core.Entities.Positions;
 using PolishDraughts.Core.Enums;
-using PolishDraughts.Core.Interfaces;
 
 namespace PolishDraughts.Presentation
 {
-    public class View : IView
+    public class View
     {
         private readonly string _line = new string(' ', 3) + new string('-', 4 * Board.Size + 1);
         //A   B   C   etc.
@@ -20,7 +19,7 @@ namespace PolishDraughts.Presentation
 
         public void DisplayMsg(string message) => Console.WriteLine(message);
 
-        public void DisplayBoard(IBoard board)
+        public void DisplayBoard(Board board)
         {
             Console.WriteLine();
             for (var row = 0; row < Board.Size; row++)

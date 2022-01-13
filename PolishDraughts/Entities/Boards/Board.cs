@@ -4,11 +4,10 @@ using System.Linq;
 using PolishDraughts.Core.Entities.Pieces;
 using PolishDraughts.Core.Entities.Positions;
 using PolishDraughts.Core.Enums;
-using PolishDraughts.Core.Interfaces;
 
 namespace PolishDraughts.Core.Entities.Boards
 {
-    public class Board : IBoard
+    public class Board
     {
         public const int Size  = 10;
 
@@ -190,7 +189,7 @@ namespace PolishDraughts.Core.Entities.Boards
             var piecesToCapture = GetPiecesToCapture(piecePosition).ToList();
             if (!piecesToCapture.Any())
             {
-                allPaths.Add(new CapturePath(path.Reverse().ToList(), captured.Reverse().ToList()));
+                allPaths.Add(new CapturePath {Captured = captured.Reverse().ToList(), Path = path.Reverse().ToList()});
                 return;
             }
 

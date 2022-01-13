@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
+using PolishDraughts.Core.Entities.Boards;
 using PolishDraughts.Core.Entities.Pieces;
 using PolishDraughts.Core.Entities.Positions;
 using PolishDraughts.Core.Enums;
-using PolishDraughts.Core.Interfaces;
 
 namespace PolishDraughts.Core.Entities.Players
 {
@@ -11,8 +11,8 @@ namespace PolishDraughts.Core.Entities.Players
     {
         public Color Color { get; }
 
-        protected readonly IBoard Board;
-        protected Player(IBoard board, Color color)
+        protected readonly Board Board;
+        protected Player(Board board, Color color)
         {   
             Board = board;
             Color = color;

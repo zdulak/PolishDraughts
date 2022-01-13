@@ -1,15 +1,14 @@
 using System;
 using System.Collections.Generic;
 using PolishDraughts.Core.Entities.Positions;
-using PolishDraughts.Core.Interfaces;
 
 namespace PolishDraughts.Presentation
 {
-    public class Controller : IController
+    public class Controller
     {
-        public IView View { get; }
+        public View View { get; }
 
-        public Controller(IView view)
+        public Controller(View view)
         {
             View = view;
         }
