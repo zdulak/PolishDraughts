@@ -1,15 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using PolishDraughts.Core.Entities.Positions;
+using PolishDraughts.Core.Enums;
+using PolishDraughts.Core.Interfaces;
 
-namespace PolishDraughts
+namespace PolishDraughts.Core.Entities.Players
 {
     public class Computer : Player
     {
-        private readonly View _view;
+        private readonly IView _view;
         private readonly Random _random;
-        public Computer(Board board, Color color, View view) : base(board, color)
+        public Computer(IBoard board, Color color, IView view) : base(board, color)
         {
             _view = view;
             _random = new Random();

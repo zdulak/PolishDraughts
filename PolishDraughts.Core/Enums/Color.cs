@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace PolishDraughts
+namespace PolishDraughts.Core.Enums
 {
     public enum Color
     {

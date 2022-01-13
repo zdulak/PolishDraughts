@@ -1,11 +1,9 @@
 using System.Collections.Generic;
 
-namespace PolishDraughts
+namespace PolishDraughts.Core.Entities.Positions
 {
-    public class CapturePath
+    public record CapturePath(List<Position> Path, List<Position> Captured)
     {
-        public List<Position> Path { get; set; }
-        public List<Position> Captured { get; set; }
         public override string ToString()
         {
             var path = string.Join("->", Path);

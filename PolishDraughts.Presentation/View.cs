@@ -1,10 +1,14 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using PolishDraughts.Core.Entities.Boards;
+using PolishDraughts.Core.Entities.Pieces;
+using PolishDraughts.Core.Entities.Positions;
+using PolishDraughts.Core.Enums;
+using PolishDraughts.Core.Interfaces;
 
-namespace PolishDraughts
+namespace PolishDraughts.Presentation
 {
-    public class View
+    public class View : IView
     {
         private readonly string _line = new string(' ', 3) + new string('-', 4 * Board.Size + 1);
         //A   B   C   etc.
@@ -16,7 +20,7 @@ namespace PolishDraughts
 
         public void DisplayMsg(string message) => Console.WriteLine(message);
 
-        public void DisplayBoard(Board board)
+        public void DisplayBoard(IBoard board)
         {
             Console.WriteLine();
             for (var row = 0; row < Board.Size; row++)
@@ -46,16 +50,16 @@ namespace PolishDraughts
                 case null:
                     Console.Write("   ");
                     break;
-                case Men _ when piece.Color == Color.White:
+                case Men when piece.Color == Color.White:
                     Console.Write("(W)");
                     break;
-                case Men _ when piece.Color == Color.Black:
+                case Men when piece.Color == Color.Black:
                     Console.Write("(B)");
                     break;
-                case King _ when piece.Color == Color.White:
+                case King when piece.Color == Color.White:
                     Console.Write("[W]");
                     break;
-                case King _ when piece.Color == Color.Black:
+                case King when piece.Color == Color.Black:
                     Console.Write("[B]");
                     break;
                 default:

@@ -1,16 +1,18 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using PolishDraughts.Core.Entities.Pieces;
+using PolishDraughts.Core.Entities.Positions;
+using PolishDraughts.Core.Enums;
+using PolishDraughts.Core.Interfaces;
 
-namespace PolishDraughts
+namespace PolishDraughts.Core.Entities.Players
 {
     public abstract class Player
     {
         public Color Color { get; }
 
-        protected readonly Board Board;
-        protected Player(Board board, Color color)
+        protected readonly IBoard Board;
+        protected Player(IBoard board, Color color)
         {   
             Board = board;
             Color = color;

@@ -1,6 +1,4 @@
-using System;
-
-namespace PolishDraughts
+namespace PolishDraughts.Presentation
 {
     internal class Program
     {
