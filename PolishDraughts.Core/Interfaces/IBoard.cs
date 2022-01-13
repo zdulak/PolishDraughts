@@ -5,7 +5,7 @@ using PolishDraughts.Core.Enums;
 
 namespace PolishDraughts.Core.Interfaces
 {
-    public interface IBoard
+    public interface IBoard : IDependency
     {
         Piece this[Position position] { get; }
         void MovePiece(ref Position piecePosition, Position targetPosition);

@@ -11,10 +11,10 @@ namespace PolishDraughts.Core.Entities.Players
     {
         private readonly IView _view;
         private readonly Random _random;
-        public Computer(IBoard board, Color color, IView view) : base(board, color)
+        public Computer(IBoard board, Color color, IView view, Random random) : base(board, color)
         {
             _view = view;
-            _random = new Random();
+            _random = random;
         }
 
         protected override Position ChoosePiece()
