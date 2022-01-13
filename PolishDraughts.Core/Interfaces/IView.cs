@@ -1,6 +1,6 @@
 namespace PolishDraughts.Core.Interfaces
 {
-    public interface IView
+    public interface IView : IDependency
     {
         void Clear();
         void DisplayMsg(string message);

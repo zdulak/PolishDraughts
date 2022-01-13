@@ -1,7 +1,7 @@
 using System;
 using System.Reflection;
 using Autofac;
-using PolishDraughts.Core.Entities.Games;
+using PolishDraughts.Core.Entities.Players;
 using PolishDraughts.Core.Interfaces;
 
 namespace PolishDraughts.Presentation
@@ -11,18 +11,26 @@ namespace PolishDraughts.Presentation
         private static void Main()
         {
             var container = ConfigureContainer();
-            container.Resolve<Game>().Run();
+            using (var scope = container.BeginLifetimeScope())
+            {
+                scope.Resolve<GameFactory>().Create().Run();
+            }
         }
 
         private static IContainer ConfigureContainer()
         {
             var builder = new ContainerBuilder();
-            builder.RegisterType<Random>().AsSelf();
-            builder.RegisterType<View>().As<IView>().SingleInstance();
+            builder.RegisterType<GameFactory>().AsSelf();
+            builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(Player)))
+                .Where(t => t.IsSubclassOf(typeof(Player))).AsSelf().InstancePerDependency();
             builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
                 .AssignableTo<IDependency>()
                 .AsImplementedInterfaces()
-                .InstancePerDependency();
+                .SingleInstance();
+            builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(IDependency)))
+                .AssignableTo<IDependency>()
+                .AsImplementedInterfaces()
+                .SingleInstance();
             return builder.Build();
 
         }

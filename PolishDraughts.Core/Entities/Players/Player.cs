@@ -12,7 +12,7 @@ namespace PolishDraughts.Core.Entities.Players
         public Color Color { get; }
 
         protected readonly IBoard Board;
-        protected Player(IBoard board, Color color)
+        protected Player(Color color, IBoard board)
         {   
             Board = board;
             Color = color;
