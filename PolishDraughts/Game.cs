@@ -1,10 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
-using PolishDraughts.Core.Entities.Boards;
-using PolishDraughts.Core.Entities.Players;
-using PolishDraughts.Core.Enums;
+using System.Text;
 
-namespace PolishDraughts.Core.Entities.Games
+namespace PolishDraughts
 {
     public class Game
     {

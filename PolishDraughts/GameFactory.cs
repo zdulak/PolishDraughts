@@ -1,9 +1,6 @@
 using System;
-using PolishDraughts.Core.Entities.Boards;
-using PolishDraughts.Core.Entities.Players;
-using PolishDraughts.Core.Enums;
 
-namespace PolishDraughts.Core.Entities.Games
+namespace PolishDraughts
 {
     // Do not confuse the following code with the factory design pattern.
     // See https://refactoring.guru/design-patterns/factory-comparison

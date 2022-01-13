@@ -1,6 +1,6 @@
-using PolishDraughts.Core.Entities.Games;
+using System;
 
-namespace PolishDraughts.Presentation
+namespace PolishDraughts
 {
     internal class Program
     {

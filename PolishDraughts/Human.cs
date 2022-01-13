@@ -1,9 +1,9 @@
+using System;
 using System.Collections.Generic;
-using PolishDraughts.Core.Entities.Boards;
-using PolishDraughts.Core.Entities.Positions;
-using PolishDraughts.Core.Enums;
+using System.Linq;
+using System.Text;
 
-namespace PolishDraughts.Core.Entities.Players
+namespace PolishDraughts
 {
     public class Human : Player
     {

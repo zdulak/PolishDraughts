@@ -1,9 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using PolishDraughts.Core.Entities.Positions;
-using PolishDraughts.Core.Enums;
+using System.Text;
 
-namespace PolishDraughts.Core.Entities.Pieces
+namespace PolishDraughts
 {
     public abstract class Piece
     {

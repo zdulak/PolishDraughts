@@ -2,11 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using PolishDraughts.Core;
-using PolishDraughts.Core.Entities.Boards;
-using PolishDraughts.Core.Entities.Players;
-using PolishDraughts.Core.Entities.Positions;
-using PolishDraughts.Core.Enums;
 
 namespace PolishDraughts
 {
