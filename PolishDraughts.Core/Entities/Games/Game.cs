@@ -64,8 +64,14 @@ namespace PolishDraughts.Core.Entities.Games
                 }
             }
 
-            _view.DisplayMsg(
-                winner is Color.White or Color.Black ? $"{winner} player won the game!" : "It's a draw!");
+            if (winner == Color.White || winner == Color.Black)
+            {
+                _view.DisplayMsg($"{winner} player won the game!");
+            }
+            else
+            {
+                _view.DisplayMsg("It's a draw!");
+            }
 
             Quit();
         }

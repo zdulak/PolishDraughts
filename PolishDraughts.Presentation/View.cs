@@ -50,16 +50,16 @@ namespace PolishDraughts.Presentation
                 case null:
                     Console.Write("   ");
                     break;
-                case Men when piece.Color == Color.White:
+                case Men _ when piece.Color == Color.White:
                     Console.Write("(W)");
                     break;
-                case Men when piece.Color == Color.Black:
+                case Men _ when piece.Color == Color.Black:
                     Console.Write("(B)");
                     break;
-                case King when piece.Color == Color.White:
+                case King _ when piece.Color == Color.White:
                     Console.Write("[W]");
                     break;
-                case King when piece.Color == Color.Black:
+                case King _ when piece.Color == Color.Black:
                     Console.Write("[B]");
                     break;
                 default:
