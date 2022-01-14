@@ -13,7 +13,7 @@ namespace PolishDraughts.Presentation
             var container = ConfigureContainer();
             using (var scope = container.BeginLifetimeScope())
             {
-                scope.Resolve<GameFactory>().Create().Run();
+                scope.Resolve<Menu>().Main();
             }
         }
 

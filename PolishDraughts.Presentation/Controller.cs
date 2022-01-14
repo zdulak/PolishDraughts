@@ -43,23 +43,24 @@ namespace PolishDraughts.Presentation
 
         public CapturePath GetPath(List<CapturePath> capturePaths)
         {
-            View.DisplayMsg("You have a mandatory capture. Choose one of the capture paths available below:");
-            for (var i = 0; i < capturePaths.Count; i++)
-            {
-                View.DisplayMsg($"{i+1} {capturePaths[i]}");
-            }
+            var number = GetOption(capturePaths.Count, () =>  View.DisplayCapturePaths(capturePaths));
+            return capturePaths[number];
+        }
 
+        public int GetOption(int optionsNumber, Action messageView)
+        {
             while (true)
             {
-                if (int.TryParse(Console.ReadLine(), out var index))
-                {
-                    index -= 1;
-                    if (index >= 0 && index < capturePaths.Count) return capturePaths[index];
-                }
+                messageView();
+
+                if (int.TryParse(Console.ReadLine(), out var choice) && choice >= 1 && choice <= optionsNumber)
+                    return --choice;
 
                 View.DisplayMsg("Invalid input.");
             }
         }
+
+        public void Quit() => Environment.Exit(0);
 
         private bool IsInputValid(string input)
         {

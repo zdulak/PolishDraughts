@@ -8,11 +8,13 @@ namespace PolishDraughts.Core.Entities.Games
 {
     public class Game : IGame
     {
+        private readonly IController _controller;
         private readonly IView _view;
         private readonly Player[] _players;
         private readonly IBoard _board;
-        public Game(IView view, IBoard board, Player[] players)
+        public Game(IController controller, IView view, IBoard board, Player[] players)
         {
+            _controller = controller;
             _view = view;
             _board = board;
             _players = players;
@@ -66,10 +68,7 @@ namespace PolishDraughts.Core.Entities.Games
             _view.DisplayMsg(
                 winner is Color.White or Color.Black ? $"{winner} player won the game!" : "It's a draw!");
 
-            Quit();
+            _controller.Quit();
         }
-
-        public void Quit() => Environment.Exit(0);
-
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using PolishDraughts.Core.Entities.Boards;
 using PolishDraughts.Core.Entities.Pieces;
@@ -38,6 +39,30 @@ namespace PolishDraughts.Presentation
             Console.WriteLine(_line);
             Console.WriteLine(new string(' ', 5)+ _letters);
             Console.WriteLine();
+        }
+
+        public void DisplayCapturePaths(List<CapturePath> capturePaths)
+        {
+            DisplayMsg("You have a mandatory capture. Choose one of the capture paths available below:");
+            for (var i = 0; i < capturePaths.Count; i++)
+            {
+                DisplayMsg($"{i + 1} {capturePaths[i]}");
+            }
+        }
+
+        public void DisplayMainMenu()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DisplayRules()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DisplayAbout()
+        {
+            throw new NotImplementedException();
         }
 
         private void DisplaySlot(Piece piece, Position position)
