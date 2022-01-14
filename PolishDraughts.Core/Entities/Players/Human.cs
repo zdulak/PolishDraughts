@@ -9,7 +9,7 @@ namespace PolishDraughts.Core.Entities.Players
     {
         private readonly IController _controller;
 
-        public Human(IBoard board, Color color, IController controller) : base(board, color)
+        public Human(Color color, IBoard board, IController controller) : base(color, board)
         {
             _controller = controller;
         }

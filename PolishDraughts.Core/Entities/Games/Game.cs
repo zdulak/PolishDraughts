@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using PolishDraughts.Core.Entities.Boards;
 using PolishDraughts.Core.Entities.Players;
 using PolishDraughts.Core.Enums;
 using PolishDraughts.Core.Interfaces;

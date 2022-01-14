@@ -1,6 +1,4 @@
 using System;
-using PolishDraughts.Core.Entities.Boards;
-using PolishDraughts.Core.Entities.Games;
 using PolishDraughts.Core.Entities.Players;
 using PolishDraughts.Core.Enums;
 using PolishDraughts.Core.Interfaces;
@@ -11,19 +9,21 @@ namespace PolishDraughts.Presentation
     // See https://refactoring.guru/design-patterns/factory-comparison
     public class GameFactory
     {
-        private readonly IView _view;
-        private Board _board;
-        private IController _controller;
+        private readonly Func<Player[], IGame> _gameFactory;
+        private readonly Func<Color, Human> _humanFactory;
+        private readonly Func<Color, Computer> _computerFactory;
 
-        public GameFactory() => _view = new View();
 
-        public Game Create()
+        public GameFactory(Func<Player[], IGame> gameFactory, Func<Color, Human> humanFactory,
+            Func<Color, Computer> computerFactory)
         {
-            _board = new Board();
-            return new Game(_view, _board, CreatePlayers());
+            _gameFactory = gameFactory;
+            _humanFactory = humanFactory;
+            _computerFactory = computerFactory;
         }
 
-        private Controller CreateController() => new Controller(_view);
+        public IGame Create() => _gameFactory(CreatePlayers());
+
 
         private Player[] CreatePlayers()
         {
@@ -42,28 +42,23 @@ namespace PolishDraughts.Presentation
                     case "1":
                         return new Player[]
                         {
-                            new Computer(_board, Color.White, _view),
-                            new Computer(_board, Color.Black, _view)
+                            _computerFactory(Color.White), _computerFactory(Color.Black)
                         };
                     case "2":
                         return new Player[]
                         {
-                            new Computer(_board, Color.White, _view),
-                            new Human(_board, Color.Black, _controller ??= CreateController())
+                            _computerFactory(Color.White), _humanFactory(Color.Black)
 
                         };
                     case "3":
                         return new Player[]
                         {
-                            new Human(_board, Color.White, _controller ??= CreateController()),
-                            new Computer(_board, Color.Black, _view)
+                            _humanFactory(Color.White), _computerFactory(Color.Black)
                         };
                     case "4":
-                        _controller ??= CreateController();
                         return new Player[]
                         {
-                            new Human(_board, Color.White, _controller),
-                            new Human(_board, Color.Black, _controller)
+                            _humanFactory(Color.White), _humanFactory(Color.Black)
                         };
                     default:
                         Console.WriteLine("Invalid input");

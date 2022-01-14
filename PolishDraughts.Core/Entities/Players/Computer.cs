@@ -11,7 +11,7 @@ namespace PolishDraughts.Core.Entities.Players
     {
         private readonly IView _view;
         private readonly Random _random;
-        public Computer(IBoard board, Color color, IView view) : base(board, color)
+        public Computer(Color color, IBoard board, IView view) : base(color, board)
         {
             _view = view;
             _random = new Random();

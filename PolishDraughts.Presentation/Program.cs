@@ -1,7 +1,38 @@
+using System;
+using System.Reflection;
+using Autofac;
+using PolishDraughts.Core.Entities.Players;
+using PolishDraughts.Core.Interfaces;
+
 namespace PolishDraughts.Presentation
 {
     internal class Program
     {
-        private static void Main() => new GameFactory().Create().Run();
+        private static void Main()
+        {
+            var container = ConfigureContainer();
+            using (var scope = container.BeginLifetimeScope())
+            {
+                scope.Resolve<GameFactory>().Create().Run();
+            }
+        }
+
+        private static IContainer ConfigureContainer()
+        {
+            var builder = new ContainerBuilder();
+            builder.RegisterType<GameFactory>().AsSelf();
+            builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(Player)))
+                .Where(t => t.IsSubclassOf(typeof(Player))).AsSelf().InstancePerDependency();
+            builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
+                .AssignableTo<IDependency>()
+                .AsImplementedInterfaces()
+                .SingleInstance();
+            builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(IDependency)))
+                .AssignableTo<IDependency>()
+                .AsImplementedInterfaces()
+                .SingleInstance();
+            return builder.Build();
+
+        }
     }
 }

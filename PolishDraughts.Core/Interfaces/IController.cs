@@ -3,7 +3,7 @@ using PolishDraughts.Core.Entities.Positions;
 
 namespace PolishDraughts.Core.Interfaces
 {
-    public interface IController
+    public interface IController : IDependency
     {
         IView View { get; }
         Position GetPosition(int kind);
