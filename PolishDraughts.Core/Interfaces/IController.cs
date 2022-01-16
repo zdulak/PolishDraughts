@@ -9,7 +9,7 @@ namespace PolishDraughts.Core.Interfaces
         IView View { get; }
         Position GetPosition(int kind);
         CapturePath GetPath(List<CapturePath> capturePaths);
-        int GetOption(int optionsNumber, Action messageView);
+        int GetOption(int optionsNumber, Action messageView, bool clearScreen = false);
         void Quit();
     }
 }

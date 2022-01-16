@@ -30,7 +30,8 @@ namespace PolishDraughts.Presentation
                 if (IsInputValid(algebraicPosition))
                 {
                     var position = new Position(algebraicPosition);
-                    if (position.IsValid()) return position;
+                    if (position.IsValid()) 
+                        return position;
 
                     View.DisplayMsg("Invalid position");
                 }
@@ -47,7 +48,7 @@ namespace PolishDraughts.Presentation
             return capturePaths[number];
         }
 
-        public int GetOption(int optionsNumber, Action messageView)
+        public int GetOption(int optionsNumber, Action messageView, bool clearScreen = false)
         {
             while (true)
             {
@@ -56,7 +57,9 @@ namespace PolishDraughts.Presentation
                 if (int.TryParse(Console.ReadLine(), out var choice) && choice >= 1 && choice <= optionsNumber)
                     return --choice;
 
-                View.DisplayMsg("Invalid input.");
+                if (clearScreen)
+                    View.Clear();
+                View.DisplayMsg("Invalid input.\n");
             }
         }
 

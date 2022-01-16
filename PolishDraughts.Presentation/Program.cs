@@ -13,14 +13,14 @@ namespace PolishDraughts.Presentation
             var container = ConfigureContainer();
             using (var scope = container.BeginLifetimeScope())
             {
-                scope.Resolve<Menu>().Main();
+                scope.Resolve<Menu>().MainMenu();
             }
         }
 
         private static IContainer ConfigureContainer()
         {
             var builder = new ContainerBuilder();
-            builder.RegisterType<GameFactory>().AsSelf();
+            builder.RegisterType<Menu>().AsSelf();
             builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(Player)))
                 .Where(t => t.IsSubclassOf(typeof(Player))).AsSelf().InstancePerDependency();
             builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())

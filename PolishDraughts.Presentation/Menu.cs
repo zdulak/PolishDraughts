@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using PolishDraughts.Core.Entities.Players;
 using PolishDraughts.Core.Enums;
 using PolishDraughts.Core.Interfaces;
@@ -26,7 +27,7 @@ namespace PolishDraughts.Presentation
             _players = new Player[2];
         }
 
-        public void Main()
+        public void MainMenu()
         {
             ChoiceMenu(
                 new List<Action>
@@ -38,7 +39,31 @@ namespace PolishDraughts.Presentation
 
         private void NewGame()
         {
-
+            foreach (var (color, i) in new[] { (Color.White, 0), (Color.Black, 1) })
+            {
+                var options = new List<string> { "Human", "Computer", nameof(MainMenu) };
+                _view.Clear();
+                var optionNumber = _controller.GetOption(
+                    options.Count,
+                    () =>
+                    {
+                        _view.DisplayPlayerChoice(color);
+                        _view.DisplayChoiceMenu(options);
+                    }, true);
+                switch (optionNumber)
+                {
+                    case 0:
+                        _players[i] = _humanFactory(color);
+                        break;
+                    case 1:
+                        _players[i] = _computerFactory(color);
+                        break;
+                    default:
+                        MainMenu();
+                        break;
+                }
+            }
+            _gameFactory(_players).Run();
         }
 
         private void Rules()
@@ -46,7 +71,7 @@ namespace PolishDraughts.Presentation
             ChoiceMenu(
                 new List<Action>
                 {
-                    Main,  _controller.Quit
+                    MainMenu,  _controller.Quit
                 },
                 _view.DisplayRules);
         }
@@ -56,14 +81,19 @@ namespace PolishDraughts.Presentation
             ChoiceMenu(
                 new List<Action>
                 {
-                    Main, _controller.Quit
+                    MainMenu, _controller.Quit
                 },
                 _view.DisplayAbout);
         }
 
         private void ChoiceMenu(List<Action> options, Action menuView)
         {
-            var optionNumber = _controller.GetOption(options.Count, menuView);
+            _view.Clear();
+            var optionNumber = _controller.GetOption(options.Count, () =>
+            {
+                menuView();
+                _view.DisplayChoiceMenu(options.Select(o => o.Method.Name));
+            }, true);
             options[optionNumber]();
         }
     }
