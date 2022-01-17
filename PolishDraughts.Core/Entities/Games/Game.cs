@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using PolishDraughts.Core.Entities.Players;
 using PolishDraughts.Core.Enums;
+using PolishDraughts.Core.Exceptions;
 using PolishDraughts.Core.Interfaces;
 
 namespace PolishDraughts.Core.Entities.Games
@@ -18,6 +19,8 @@ namespace PolishDraughts.Core.Entities.Games
             _view = view;
             _board = board;
             _players = players;
+
+            _controller.QuitCommand += Abort;
         }
         public void Run()
         {
@@ -48,6 +51,10 @@ namespace PolishDraughts.Core.Entities.Games
                     if (player.HasMove())
                     {
                         _view.DisplayMsg($"{player.Color} player turn.");
+                        if (player is Human)
+                        {
+                            _view.DisplayMsg("In order to return to main menu, please enter ctrl+c.");
+                        }
                         player.MakeMove();
                         _view.DisplayBoard(_board);
                     }
@@ -67,8 +74,15 @@ namespace PolishDraughts.Core.Entities.Games
 
             _view.DisplayMsg(
                 winner is Color.White or Color.Black ? $"{winner} player won the game!" : "It's a draw!");
+            _controller.GetExitKey();
+            Abort();
+        }
 
-            _controller.Quit();
+        public void Abort()
+        {
+            _board.Reset();
+            _controller.QuitCommand -= Abort;
+            throw new GameAbortException();
         }
     }
 }

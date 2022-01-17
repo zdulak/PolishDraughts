@@ -7,7 +7,9 @@ namespace PolishDraughts.Presentation
 {
     public class Controller : IController
     {
+        public event Action QuitCommand;
         public IView View { get; }
+        private const string QuitLiteral = "quit";
 
         public Controller(IView view)
         {
@@ -27,6 +29,10 @@ namespace PolishDraughts.Presentation
             while (true)
             {
                 var algebraicPosition = Console.ReadLine();
+                if (algebraicPosition?.ToLower() == QuitLiteral)
+                {
+                    OnQuitCommand();
+                }
                 if (IsInputValid(algebraicPosition))
                 {
                     var position = new Position(algebraicPosition);
@@ -53,14 +59,24 @@ namespace PolishDraughts.Presentation
             while (true)
             {
                 messageView();
-
-                if (int.TryParse(Console.ReadLine(), out var choice) && choice >= 1 && choice <= optionsNumber)
+                var input = Console.ReadLine();
+                if (input?.ToLower() == QuitLiteral)
+                {
+                    OnQuitCommand();
+                }
+                if (int.TryParse(input, out var choice) && choice >= 1 && choice <= optionsNumber)
                     return --choice;
 
                 if (clearScreen)
                     View.Clear();
                 View.DisplayMsg("Invalid input.\n");
             }
+        }
+
+        public void GetExitKey()
+        {
+            Console.WriteLine("Press any key to return to main menu.");
+            Console.Read();
         }
 
         public void Quit() => Environment.Exit(0);
@@ -71,5 +87,7 @@ namespace PolishDraughts.Presentation
                    ((input.Length == 2 && char.IsDigit(input[1])) ||
                     (input.Length == 3 && input[1..] == "10"));
         }
+
+        private void OnQuitCommand() => QuitCommand?.Invoke();
     }
 }

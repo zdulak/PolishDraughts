@@ -8,6 +8,7 @@ namespace PolishDraughts.Core.Interfaces
     public interface IBoard : IDependency
     {
         Piece this[Position position] { get; }
+        void Reset();
         void MovePiece(ref Position piecePosition, Position targetPosition);
         void ClearSlots(List<Position> positions);
         void CrownPiece(Position position);

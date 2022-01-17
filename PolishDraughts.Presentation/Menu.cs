@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using PolishDraughts.Core.Entities.Players;
 using PolishDraughts.Core.Enums;
+using PolishDraughts.Core.Exceptions;
 using PolishDraughts.Core.Interfaces;
 
 namespace PolishDraughts.Presentation
@@ -39,10 +40,12 @@ namespace PolishDraughts.Presentation
 
         private void NewGame()
         {
+            var options = new List<string> { "Human", "Computer", nameof(MainMenu) };
+
             foreach (var (color, i) in new[] { (Color.White, 0), (Color.Black, 1) })
             {
-                var options = new List<string> { "Human", "Computer", nameof(MainMenu) };
                 _view.Clear();
+
                 var optionNumber = _controller.GetOption(
                     options.Count,
                     () =>
@@ -50,6 +53,7 @@ namespace PolishDraughts.Presentation
                         _view.DisplayPlayerChoice(color);
                         _view.DisplayChoiceMenu(options);
                     }, true);
+
                 switch (optionNumber)
                 {
                     case 0:
@@ -63,7 +67,15 @@ namespace PolishDraughts.Presentation
                         break;
                 }
             }
-            _gameFactory(_players).Run();
+
+            try
+            {
+                _gameFactory(_players).Run();
+            }
+            catch (GameAbortException)
+            {
+            }
+            MainMenu();
         }
 
         private void Rules()
