@@ -7,7 +7,9 @@ namespace PolishDraughts.Presentation
 {
     public class Controller : IController
     {
+        public event Action QuitCommand;
         public IView View { get; }
+        private const string QuitLiteral = "quit";
 
         public Controller(IView view)
         {
@@ -27,10 +29,15 @@ namespace PolishDraughts.Presentation
             while (true)
             {
                 var algebraicPosition = Console.ReadLine();
+                if (algebraicPosition?.ToLower() == QuitLiteral)
+                {
+                    OnQuitCommand();
+                }
                 if (IsInputValid(algebraicPosition))
                 {
                     var position = new Position(algebraicPosition);
-                    if (position.IsValid()) return position;
+                    if (position.IsValid()) 
+                        return position;
 
                     View.DisplayMsg("Invalid position");
                 }
@@ -43,23 +50,36 @@ namespace PolishDraughts.Presentation
 
         public CapturePath GetPath(List<CapturePath> capturePaths)
         {
-            View.DisplayMsg("You have a mandatory capture. Choose one of the capture paths available below:");
-            for (var i = 0; i < capturePaths.Count; i++)
-            {
-                View.DisplayMsg($"{i+1} {capturePaths[i]}");
-            }
+            var number = GetOption(capturePaths.Count, () =>  View.DisplayCapturePaths(capturePaths));
+            return capturePaths[number];
+        }
 
+        public int GetOption(int optionsNumber, Action messageView, bool clearScreen = false)
+        {
             while (true)
             {
-                if (int.TryParse(Console.ReadLine(), out var index))
+                messageView();
+                var input = Console.ReadLine();
+                if (input?.ToLower() == QuitLiteral)
                 {
-                    index -= 1;
-                    if (index >= 0 && index < capturePaths.Count) return capturePaths[index];
+                    OnQuitCommand();
                 }
+                if (int.TryParse(input, out var choice) && choice >= 1 && choice <= optionsNumber)
+                    return --choice;
 
-                View.DisplayMsg("Invalid input.");
+                if (clearScreen)
+                    View.Clear();
+                View.DisplayMsg("Invalid input.\n");
             }
         }
+
+        public void GetExitKey()
+        {
+            Console.WriteLine("Press any key to return to main menu.");
+            Console.Read();
+        }
+
+        public void Quit() => Environment.Exit(0);
 
         private bool IsInputValid(string input)
         {
@@ -67,5 +87,7 @@ namespace PolishDraughts.Presentation
                    ((input.Length == 2 && char.IsDigit(input[1])) ||
                     (input.Length == 3 && input[1..] == "10"));
         }
+
+        private void OnQuitCommand() => QuitCommand?.Invoke();
     }
 }

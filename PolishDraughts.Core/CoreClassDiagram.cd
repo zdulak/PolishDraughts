@@ -10,20 +10,49 @@
         <Point X="8.875" Y="7.75" />
       </Path>
     </InheritanceLine>
+    <AssociationLine Name="_view" Type="PolishDraughts.Core.Interfaces.IView" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="10" Y="9.812" />
+        <Point X="14.125" Y="9.812" />
+        <Point X="14.125" Y="2.688" />
+        <Point X="13.75" Y="2.688" />
+      </Path>
+    </AssociationLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAgAAAAAAAAIAAADgAAAAAAAE=</HashCode>
       <FileName>Entities\Players\Computer.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_view" />
+    </ShowAsAssociation>
   </Class>
   <Class Name="PolishDraughts.Core.Entities.Games.Game">
     <Position X="9.5" Y="0.5" Width="1.5" />
+    <AssociationLine Name="_players" Type="PolishDraughts.Core.Entities.Players.Player">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.11" Y="0.605" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="_controller" Type="PolishDraughts.Core.Interfaces.IController" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="11" Y="1.647" />
+        <Point X="11.875" Y="1.647" />
+        <Point X="11.875" Y="4.875" />
+        <Point X="12.25" Y="4.875" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.472" Y="2.047" />
+      </MemberNameLabel>
+    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAEAAAAAAAABAAAAAAACAAAAAAAQI=</HashCode>
+      <HashCode>AAAAAAAAAAAAACAAEAAAAAAAABAAAAAAACAAAEAAAAI=</HashCode>
       <FileName>Entities\Games\Game.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Field Name="_board" />
+      <Field Name="_view" />
       <Field Name="_players" />
+      <Field Name="_board" />
+      <Field Name="_controller" />
     </ShowAsAssociation>
     <Lollipop Position="0.2" />
   </Class>
@@ -91,10 +120,18 @@
         <Point X="11.5" Y="7.75" />
       </Path>
     </InheritanceLine>
+    <AssociationLine Name="_controller" Type="PolishDraughts.Core.Interfaces.IController">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.473" Y="-0.421" />
+      </MemberNameLabel>
+    </AssociationLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAABgAAEAAAAA=</HashCode>
       <FileName>Entities\Players\Human.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_controller" />
+    </ShowAsAssociation>
   </Class>
   <Struct Name="PolishDraughts.Core.Entities.Positions.Position">
     <Position X="0.75" Y="0.5" Width="2" />
@@ -111,12 +148,34 @@
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>EAAAAAAAAIAQAAIACIhCCAACAACAAAACACAAAAAAAAA=</HashCode>
+      <HashCode>EAAAAAAAAIAQBAIACIhCCAACAACAAAACACAAAAAAAAA=</HashCode>
       <FileName>Interfaces\IBoard.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="this[PolishDraughts.Core.Entities.Positions.Position]" />
     </ShowAsAssociation>
+  </Interface>
+  <Interface Name="PolishDraughts.Core.Interfaces.IController">
+    <Position X="12.25" Y="4.5" Width="1.5" />
+    <AssociationLine Name="View" Type="PolishDraughts.Core.Interfaces.IView">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.125" Y="0.84" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAACAAAAAAAAAAAADAAAIAAIAAAAAAQA=</HashCode>
+      <FileName>Interfaces\IController.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="View" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="PolishDraughts.Core.Interfaces.IView">
+    <Position X="12.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAIAAAAIAEgAABAAAEAAABAAAAAAAAAABAAAA=</HashCode>
+      <FileName>Interfaces\IView.cs</FileName>
+    </TypeIdentifier>
   </Interface>
   <Enum Name="PolishDraughts.Core.Enums.Color">
     <Position X="7" Y="4.75" Width="1.5" />

@@ -8,17 +8,23 @@ namespace PolishDraughts.Core.Entities.Games
 {
     public class Game : IGame
     {
+        private readonly IController _controller;
         private readonly IView _view;
         private readonly Player[] _players;
+        private readonly Action _returnPoint;
         private readonly IBoard _board;
-        public Game(IView view, IBoard board, Player[] players)
+        public Game(IController controller, IView view, IBoard board, Player[] players, Action returnPoint)
         {
+            _controller = controller;
             _view = view;
             _board = board;
             _players = players;
+            _returnPoint = returnPoint;
         }
         public void Run()
         {
+            _controller.QuitCommand += Abort;
+
             _view.Clear();
             _view.DisplayBoard(_board);
             _view.DisplayMsg("The game starts!");
@@ -46,6 +52,10 @@ namespace PolishDraughts.Core.Entities.Games
                     if (player.HasMove())
                     {
                         _view.DisplayMsg($"{player.Color} player turn.");
+                        if (player is Human)
+                        {
+                            _view.DisplayMsg("In order to return to main menu, please enter quit.");
+                        }
                         player.MakeMove();
                         _view.DisplayBoard(_board);
                     }
@@ -66,10 +76,15 @@ namespace PolishDraughts.Core.Entities.Games
             _view.DisplayMsg(
                 winner is Color.White or Color.Black ? $"{winner} player won the game!" : "It's a draw!");
 
-            Quit();
+            _controller.GetExitKey();
+            Abort();
         }
 
-        public void Quit() => Environment.Exit(0);
-
+        public void Abort()
+        {
+            _board.Reset();
+            _controller.QuitCommand -= Abort;
+            _returnPoint();
+        }
     }
 }

@@ -17,7 +17,17 @@ namespace PolishDraughts.Core.Entities.Boards
         public Board()
         {
             _slots = new Piece [Size, Size];
+            Reset();
+        }
 
+        public Piece this[Position position]
+        {
+            get => _slots[position.Row, position.Col];
+            private set => _slots[position.Row, position.Col] = value;
+        }
+
+        public void Reset()
+        {
             for (var row = 0; row < Size; row++)
             {
                 for (var col = 0; col < Size; col++)
@@ -29,20 +39,20 @@ namespace PolishDraughts.Core.Entities.Boards
                             _slots[row, col] = new Men(Color.Black);
                         }
 
-                        if (row > 5)
+                        else if (row > 5)
                         {
                             _slots[row, col] = new Men(Color.White);
+                        }
+
+                        else
+                        {
+                            _slots[row, col] = null;
                         }
                     }
                 }
             }
         }
 
-        public Piece this[Position position]
-        {
-            get => _slots[position.Row, position.Col];
-            private set => _slots[position.Row, position.Col] = value;
-        }
 
         public void MovePiece(ref Position piecePosition, Position targetPosition)
         {
