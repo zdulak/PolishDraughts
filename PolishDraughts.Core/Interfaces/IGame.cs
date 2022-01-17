@@ -1,6 +1,6 @@
 namespace PolishDraughts.Core.Interfaces
 {
-    public interface IGame : IDependency
+    public interface IGame
     {
         void Run();
         void Abort();

@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using Autofac;
+using PolishDraughts.Core.Entities.Games;
 using PolishDraughts.Core.Entities.Players;
 using PolishDraughts.Core.Interfaces;
 
@@ -21,6 +22,7 @@ namespace PolishDraughts.Presentation
         {
             var builder = new ContainerBuilder();
             builder.RegisterType<Menu>().AsSelf();
+            builder.RegisterType<Game>().As<IGame>().InstancePerDependency();
             builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(Player)))
                 .Where(t => t.IsSubclassOf(typeof(Player))).AsSelf().InstancePerDependency();
             builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())

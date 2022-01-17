@@ -53,7 +53,7 @@ namespace PolishDraughts.Core.Entities.Games
                         _view.DisplayMsg($"{player.Color} player turn.");
                         if (player is Human)
                         {
-                            _view.DisplayMsg("In order to return to main menu, please enter ctrl+c.");
+                            _view.DisplayMsg("In order to return to main menu, please enter quit.");
                         }
                         player.MakeMove();
                         _view.DisplayBoard(_board);
