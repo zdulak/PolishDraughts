@@ -22,7 +22,6 @@ namespace PolishDraughts.Presentation
         {
             var builder = new ContainerBuilder();
             builder.RegisterType<Menu>().AsSelf();
-            builder.RegisterType<Game>().As<IGame>().InstancePerDependency();
             builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(Player)))
                 .Where(t => t.IsSubclassOf(typeof(Player))).AsSelf().InstancePerDependency();
             builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())

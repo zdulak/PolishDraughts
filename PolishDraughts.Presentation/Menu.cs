@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using PolishDraughts.Core.Entities.Players;
 using PolishDraughts.Core.Enums;
-using PolishDraughts.Core.Exceptions;
 using PolishDraughts.Core.Interfaces;
 
 namespace PolishDraughts.Presentation
@@ -12,12 +11,12 @@ namespace PolishDraughts.Presentation
     {
         private readonly IView _view;
         private readonly IController _controller;
-        private readonly Func<Player[], IGame> _gameFactory;
+        private readonly Func<Player[], Action, IGame> _gameFactory;
         private readonly Func<Color, Human> _humanFactory;
         private readonly Func<Color, Computer> _computerFactory;
         private readonly Player[] _players;
 
-        public Menu(IView view, IController controller, Func<Player[], IGame> gameFactory, Func<Color, Human> humanFactory,
+        public Menu(IView view, IController controller, Func<Player[], Action, IGame> gameFactory, Func<Color, Human> humanFactory,
             Func<Color, Computer> computerFactory)
         {
             _view = view;
@@ -68,14 +67,7 @@ namespace PolishDraughts.Presentation
                 }
             }
 
-            try
-            {
-                _gameFactory(_players).Run();
-            }
-            catch (GameAbortException)
-            {
-            }
-            MainMenu();
+            _gameFactory(_players, MainMenu).Run();
         }
 
         private void Rules()
