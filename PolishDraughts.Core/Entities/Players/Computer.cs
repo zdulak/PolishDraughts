@@ -17,34 +17,39 @@ namespace PolishDraughts.Core.Entities.Players
             _random = new Random();
         }
 
-        protected override Position ChoosePiece()
+        protected override (Position piecePosition, Position targetPosition) ChooseMove()
         {
-            var piecesWithMove = Board.GetPlayerPieces(Color)
-                .Where(p => Board.HasPieceMove(p))
-                .ToList();
-            return GetPlayerChoiceFromList(piecesWithMove);
+            var move = GetPlayerChoiceFromList(GetAllPlayerMoves().ToList());
+            _view.DisplayMsg("Computer makes a move: " + $"{move.piecePosition}->{move.targetPosition}");
+            return move;
         }
 
-        protected override Position ChooseTargetPosition(Position piecePosition)
-        {
-            var pieceMoves = Board.GetPieceMoves(piecePosition).ToList();
-            var targetPosition = GetPlayerChoiceFromList(pieceMoves);
-            _view.DisplayMsg("Computer makes a move: " + $"{piecePosition}->{targetPosition}");
-            return targetPosition;
-        }
-
-        protected override CapturePath ChooseFromList(List<CapturePath> capturePaths)
+        protected override CapturePath ChooseCapture(List<CapturePath> capturePaths)
         {
             var capturePath = GetPlayerChoiceFromList(capturePaths);
             _view.DisplayMsg($"Computer makes a mandatory capture: {capturePath}");
             return capturePath;
         }
 
-
         private T GetPlayerChoiceFromList<T>(IReadOnlyList<T> elements)
         {
             System.Threading.Thread.Sleep(300);
             return elements[_random.Next(elements.Count)];
+        }
+
+        private IEnumerable<(Position piecePosition, Position targetPosition)> GetAllPlayerMoves()
+        {
+            //Local function is introduced for a code readability.
+            IEnumerable<(Position piecePosition, Position targetPosition)> GetAllPieceMoves(Position piecePosition)
+            {
+                return Board.GetPieceMoves(piecePosition)
+                    .SelectMany(
+                        targetPosition => new (Position, Position)[] { (piecePosition, targetPosition) });
+            }
+
+            var  piecesWithMove = Board.GetPlayerPieces(Color).Where(p => Board.HasPieceMove(p));
+            return piecesWithMove.SelectMany(
+                piecePosition => GetAllPieceMoves(piecePosition));
         }
     }
 }

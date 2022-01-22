@@ -38,7 +38,7 @@ namespace PolishDraughts.Core.Entities.Players
                 var allPaths = piecesHavingCapture.SelectMany(p => Board.GetPieceAllCapturePaths(p)).ToList();
                 var maxCaptured = allPaths.Max(ps => ps.Captured.Count);
                 var maximalCapturePaths = allPaths.Where(ps => ps.Captured.Count == maxCaptured).ToList();
-                var capturePath = ChooseFromList(maximalCapturePaths);
+                var capturePath = ChooseCapture(maximalCapturePaths);
 
                 piecePosition = capturePath.Path.First();
                 Board.MovePiece(ref piecePosition, capturePath.Path.Last());
@@ -46,17 +46,16 @@ namespace PolishDraughts.Core.Entities.Players
             }
             else
             {
-                piecePosition = ChoosePiece();
-                var targetPosition = ChooseTargetPosition(piecePosition);
+                Position targetPosition;
+                (piecePosition, targetPosition) = ChooseMove();
                 Board.MovePiece(ref piecePosition, targetPosition);
             }
 
             if (Board.CanBeCrowned(piecePosition)) Board.CrownPiece(piecePosition);
         }
 
-        protected abstract Position ChoosePiece();
-        protected abstract Position ChooseTargetPosition(Position piecePosition);
-        protected abstract CapturePath ChooseFromList(List<CapturePath> capturePaths);
+        protected abstract (Position piecePosition, Position targetPosition) ChooseMove();
+        protected abstract CapturePath ChooseCapture(List<CapturePath> capturePaths);
 
     }
 }

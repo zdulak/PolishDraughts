@@ -14,14 +14,22 @@ namespace PolishDraughts.Core.Entities.Players
             _controller = controller;
         }
 
-        protected override Position ChoosePiece()
+        protected override (Position piecePosition, Position targetPosition) ChooseMove()
+        {
+            var piecePosition = ChoosePiece();
+            return (piecePosition, ChooseTargetPosition(piecePosition));
+        }
+
+        protected override CapturePath ChooseCapture(List<CapturePath> capturePaths) => _controller.GetPath(capturePaths);
+
+        private Position ChoosePiece()
         {
             while (true)
             {
                 var piecePosition = _controller.GetPosition(1);
                 if (Board[piecePosition] != null && Board[piecePosition].Color == Color)
                 {
-                    if(Board.HasPieceMove(piecePosition)) return piecePosition;
+                    if (Board.HasPieceMove(piecePosition)) return piecePosition;
 
                     _controller.View.DisplayMsg("The piece does not have any move.");
                 }
@@ -31,8 +39,7 @@ namespace PolishDraughts.Core.Entities.Players
                 }
             }
         }
-
-        protected override Position ChooseTargetPosition(Position piecePosition)
+        private Position ChooseTargetPosition(Position piecePosition)
         {
             while (true)
             {
@@ -41,20 +48,6 @@ namespace PolishDraughts.Core.Entities.Players
 
                 _controller.View.DisplayMsg("Invalid move");
             }
-        }
-
-        protected override CapturePath ChooseFromList(List<CapturePath> capturePaths)
-        {
-            return _controller.GetPath(capturePaths);
-
-            //Alternative version
-            //if (capturePaths.Count > 1)
-            //{
-            //    return _controller.GetPath(capturePaths);
-            //}
-
-            //_controller.View.DisplayMsg($"You have a mandatory capture. {capturePaths.First()}");
-            //return capturePaths.First();
         }
     }
 }
