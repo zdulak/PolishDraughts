@@ -93,6 +93,25 @@ namespace PolishDraughts.Core.Entities.Boards
             return null;
         }
 
+        public void RevertMove(Move move)
+        {
+            var piecePosition = move.Path.Last();
+            MovePiece(ref piecePosition, move.Path.First());
+
+            if (move.Crowned)
+            {
+                this[piecePosition] = new Men(this[piecePosition].Color);
+            }
+
+            if (move.CapturedPositions != null)
+            {
+                for (var i = 0; i < move.CapturedPositions.Count; i++)
+                {
+                    this[move.CapturedPositions[i]] = move.CapturedPieces[i];
+                }
+            }
+        }
+
         public List<Position> GetPiecesHavingCapture(Color color) =>
             GetPlayerPieces(color).Where(HasPieceCapture).ToList();
 
@@ -205,14 +224,14 @@ namespace PolishDraughts.Core.Entities.Boards
             }
         }
 
-        public List<CapturePath> GetPieceAllCapturePaths(Position piecePosition)
+        public List<Move> GetPieceAllCapturePaths(Position piecePosition)
         {
             if (this[piecePosition] == null)
             {
                 throw new ArgumentNullException(nameof(piecePosition), "There is no piece in the given slot.");
             }
 
-            var allPaths = new List<CapturePath>();
+            var allPaths = new List<Move>();
             var path = new Stack<Position>();
             path.Push(piecePosition);
             var captured = new Stack<Position>();
@@ -220,13 +239,14 @@ namespace PolishDraughts.Core.Entities.Boards
             return allPaths;
         }
 
-        private void ComputePieceCapturePath(Position piecePosition, ICollection<CapturePath> allPaths, Stack<Position> path,
+        private void ComputePieceCapturePath(Position piecePosition, ICollection<Move> allPaths, Stack<Position> path,
             Stack<Position> captured)
         {
             var piecesToCapture = GetPiecesToCapture(piecePosition).ToList();
             if (!piecesToCapture.Any())
             {
-                allPaths.Add(new CapturePath(path.Reverse().ToList(), captured.Reverse().ToList()));
+                var capturedPieces = captured.Reverse().Select(p => this[p]).ToList().AsReadOnly();
+                allPaths.Add(new Move(path.Reverse().ToList().AsReadOnly(), false,captured.Reverse().ToList().AsReadOnly(), capturedPieces));
                 return;
             }
 

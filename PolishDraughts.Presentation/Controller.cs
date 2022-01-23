@@ -48,7 +48,7 @@ namespace PolishDraughts.Presentation
             }
         }
 
-        public CapturePath GetPath(List<CapturePath> capturePaths)
+        public Move GetPath(List<Move> capturePaths)
         {
             var number = GetOption(capturePaths.Count, () =>  View.DisplayCapturePaths(capturePaths));
             return capturePaths[number];

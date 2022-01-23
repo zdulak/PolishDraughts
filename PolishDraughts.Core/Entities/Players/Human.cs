@@ -14,13 +14,13 @@ namespace PolishDraughts.Core.Entities.Players
             _controller = controller;
         }
 
-        protected override (Position piecePosition, Position targetPosition) ChooseMove()
+        protected override (Position PiecePosition, Position TargetPosition) ChooseSimpleMove()
         {
             var piecePosition = ChoosePiece();
             return (piecePosition, ChooseTargetPosition(piecePosition));
         }
 
-        protected override CapturePath ChooseCapture(List<CapturePath> capturePaths) => _controller.GetPath(capturePaths);
+        protected override Move ChooseCapturePath(List<Move> capturePaths) => _controller.GetPath(capturePaths);
 
         private Position ChoosePiece()
         {

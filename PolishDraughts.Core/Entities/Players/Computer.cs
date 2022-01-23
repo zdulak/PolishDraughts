@@ -17,14 +17,14 @@ namespace PolishDraughts.Core.Entities.Players
             _random = new Random();
         }
 
-        protected override (Position piecePosition, Position targetPosition) ChooseMove()
+        protected override (Position PiecePosition, Position TargetPosition) ChooseSimpleMove()
         {
-            var move = GetPlayerChoiceFromList(GetAllPlayerMoves().ToList());
-            _view.DisplayMsg("Computer makes a move: " + $"{move.piecePosition}->{move.targetPosition}");
+            (Position PiecePosition, Position TargetPosition) move = GetPlayerChoiceFromList(GetAllPlayerMoves().ToList());
+            _view.DisplayMsg("Computer makes a move: " + $"{move.PiecePosition}->{move.TargetPosition}");
             return move;
         }
 
-        protected override CapturePath ChooseCapture(List<CapturePath> capturePaths)
+        protected override Move ChooseCapturePath(List<Move> capturePaths)
         {
             var capturePath = GetPlayerChoiceFromList(capturePaths);
             _view.DisplayMsg($"Computer makes a mandatory capture: {capturePath}");
@@ -37,10 +37,10 @@ namespace PolishDraughts.Core.Entities.Players
             return elements[_random.Next(elements.Count)];
         }
 
-        private IEnumerable<(Position piecePosition, Position targetPosition)> GetAllPlayerMoves()
+        private IEnumerable<(Position PiecePosition, Position TargetPosition)> GetAllPlayerMoves()
         {
             //Local function is introduced for a code readability.
-            IEnumerable<(Position piecePosition, Position targetPosition)> GetAllPieceMoves(Position piecePosition)
+            IEnumerable<(Position PiecePosition, Position TargetPosition)> GetAllPieceMoves(Position piecePosition)
             {
                 return Board.GetPieceMoves(piecePosition)
                     .SelectMany(

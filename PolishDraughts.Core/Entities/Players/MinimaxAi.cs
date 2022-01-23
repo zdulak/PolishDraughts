@@ -11,12 +11,12 @@ namespace PolishDraughts.Core.Entities.Players
         {
         }
 
-        protected override (Position piecePosition, Position targetPosition) ChooseMove()
+        protected override (Position PiecePosition, Position TargetPosition) ChooseSimpleMove()
         {
             throw new System.NotImplementedException();
         }
 
-        protected override CapturePath ChooseCapture(List<CapturePath> capturePaths)
+        protected override Move ChooseCapturePath(List<Move> capturePaths)
         {
             throw new System.NotImplementedException();
         }

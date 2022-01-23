@@ -18,7 +18,9 @@ namespace PolishDraughts.Core.Entities.Pieces
         protected Piece(Color color) => Color = color;
 
         public void Capture() => Color = Color.None;
-        
+
+        public override string ToString() => GetType().Name;
+
         public abstract bool IsCorrectJump(Position piecePosition, Position targetPosition, bool isCapturing);
     }
 }

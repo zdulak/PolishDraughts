@@ -28,34 +28,43 @@ namespace PolishDraughts.Core.Entities.Players
             return pieces.Count == 1 && Board[pieces.First()] is King;
         }
 
-        public virtual void MakeMove()
+        public virtual Move MakeMove()
         {
             Position piecePosition;
+            Move move;
             var piecesHavingCapture = Board.GetPiecesHavingCapture(Color);
 
             if (piecesHavingCapture.Count > 0)
             {
                 var allPaths = piecesHavingCapture.SelectMany(p => Board.GetPieceAllCapturePaths(p)).ToList();
-                var maxCaptured = allPaths.Max(ps => ps.Captured.Count);
-                var maximalCapturePaths = allPaths.Where(ps => ps.Captured.Count == maxCaptured).ToList();
-                var capturePath = ChooseCapture(maximalCapturePaths);
+                var maxCaptured = allPaths.Max(ps => ps.CapturedPositions.Count);
+                var maximalCapturePaths = allPaths.Where(ps => ps.CapturedPositions.Count == maxCaptured).ToList();
+                var capturePath = ChooseCapturePath(maximalCapturePaths);
 
                 piecePosition = capturePath.Path.First();
                 Board.MovePiece(ref piecePosition, capturePath.Path.Last());
-                Board.ClearSlots(capturePath.Captured);
+                Board.ClearSlots(capturePath.CapturedPositions.ToList());
+                move = capturePath;
             }
             else
             {
                 Position targetPosition;
-                (piecePosition, targetPosition) = ChooseMove();
+                (piecePosition, targetPosition) = ChooseSimpleMove();
+                move = new Move(new List<Position> { piecePosition, targetPosition }.AsReadOnly());
                 Board.MovePiece(ref piecePosition, targetPosition);
             }
 
-            if (Board.CanBeCrowned(piecePosition)) Board.CrownPiece(piecePosition);
+            if (Board.CanBeCrowned(piecePosition))
+            {
+                Board.CrownPiece(piecePosition);
+                move = move with { Crowned = true };
+            }
+
+            return move;
         }
 
-        protected abstract (Position piecePosition, Position targetPosition) ChooseMove();
-        protected abstract CapturePath ChooseCapture(List<CapturePath> capturePaths);
+        protected abstract (Position PiecePosition, Position TargetPosition) ChooseSimpleMove();
+        protected abstract Move ChooseCapturePath(List<Move> capturePaths);
 
     }
 }

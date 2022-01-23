@@ -41,7 +41,7 @@ namespace PolishDraughts.Presentation
             Console.WriteLine();
         }
 
-        public void DisplayCapturePaths(List<CapturePath> capturePaths)
+        public void DisplayCapturePaths(List<Move> capturePaths)
         {
             Console.WriteLine("You have a mandatory capture. Choose one of the capture paths available below:");
             for (var i = 0; i < capturePaths.Count; i++)

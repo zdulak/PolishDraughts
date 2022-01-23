@@ -16,12 +16,13 @@ namespace PolishDraughts.Core.Interfaces
         bool HasPieceMove(Position piecePosition);
         bool HasPieceCapture(Position piecePosition);
         Position? GetPiecePosition(Piece piece);
+        void RevertMove(Move move);
         List<Position> GetPiecesHavingCapture(Color color);
         IEnumerable<Position> GetPlayerPieces(Color color);
         bool IsValidMove(Position piecePosition, Position targetPosition);
         List<Position> GetAfterCapturePositions(Position piecePosition, Position capturedPosition);
         IEnumerable<Position> GetPieceMoves(Position piecePosition);
         IEnumerable<Position> GetPiecesToCapture(Position piecePosition);
-        List<CapturePath> GetPieceAllCapturePaths(Position piecePosition);
+        List<Move> GetPieceAllCapturePaths(Position piecePosition);
     }
 }

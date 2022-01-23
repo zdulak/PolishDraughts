@@ -10,7 +10,7 @@ namespace PolishDraughts.Core.Interfaces
         void Clear();
         void DisplayMsg(string message);
         void DisplayBoard(IBoard board);
-        void DisplayCapturePaths(List<CapturePath> capturePaths);
+        void DisplayCapturePaths(List<Move> capturePaths);
         void DisplayChoiceMenu(IEnumerable<string> options);
         void DisplayMainMenu();
         void DisplayRules();
