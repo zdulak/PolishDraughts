@@ -15,6 +15,7 @@ namespace PolishDraughts.Core.Interfaces
         bool CanBeCrowned(Position position);
         bool HasPieceMove(Position piecePosition);
         bool HasPieceCapture(Position piecePosition);
+        Position? GetPiecePosition(Piece piece);
         List<Position> GetPiecesHavingCapture(Color color);
         IEnumerable<Position> GetPlayerPieces(Color color);
         bool IsValidMove(Position piecePosition, Position targetPosition);

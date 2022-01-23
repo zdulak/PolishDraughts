@@ -53,7 +53,6 @@ namespace PolishDraughts.Core.Entities.Boards
             }
         }
 
-
         public void MovePiece(ref Position piecePosition, Position targetPosition)
         {
             (this[piecePosition], this[targetPosition]) = (this[targetPosition], this[piecePosition]);
@@ -76,6 +75,23 @@ namespace PolishDraughts.Core.Entities.Boards
         public bool HasPieceMove(Position piecePosition) => GetPieceMoves(piecePosition).Any();
 
         public bool HasPieceCapture(Position piecePosition) => GetPiecesToCapture(piecePosition).Any();
+        public Position? GetPiecePosition(Piece piece)
+        {
+            if (piece == null) return null;
+
+            for (var row = 0; row < Size; row++)
+            {
+                for (var col = 0; col < Size; col++)
+                {
+                    if (Object.ReferenceEquals(_slots[row, col], piece))
+                    {
+                        return new Position(row, col);
+                    }
+                }
+            }
+
+            return null;
+        }
 
         public List<Position> GetPiecesHavingCapture(Color color) =>
             GetPlayerPieces(color).Where(HasPieceCapture).ToList();
@@ -94,6 +110,11 @@ namespace PolishDraughts.Core.Entities.Boards
 
         public bool IsValidMove(Position piecePosition, Position targetPosition)
         {
+            if (this[piecePosition] == null)
+            {
+                throw new ArgumentNullException(nameof(piecePosition), "There is no piece in the given slot.");
+            }
+
             var piece = this[piecePosition];
             if (!piece.IsCorrectJump(piecePosition, targetPosition, false)) return false;
 
@@ -109,6 +130,11 @@ namespace PolishDraughts.Core.Entities.Boards
 
         public List<Position> GetAfterCapturePositions(Position piecePosition, Position capturedPosition)
         {
+            if (this[piecePosition] == null)
+            {
+                throw new ArgumentNullException(nameof(piecePosition), "There is no piece in the given slot.");
+            }
+
             var targetPositions = new List<Position>();
             var moveVector = (capturedPosition - piecePosition).Normalize();
             var position = capturedPosition + moveVector;
