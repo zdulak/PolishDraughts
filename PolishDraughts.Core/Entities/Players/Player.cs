@@ -30,41 +30,43 @@ namespace PolishDraughts.Core.Entities.Players
 
         public virtual Move MakeMove()
         {
-            Position piecePosition;
-            Move move;
-            var piecesHavingCapture = Board.GetPiecesHavingCapture(Color);
-
-            if (piecesHavingCapture.Count > 0)
-            {
-                var allPaths = piecesHavingCapture.SelectMany(p => Board.GetPieceAllCapturePaths(p)).ToList();
-                var maxCaptured = allPaths.Max(ps => ps.CapturedPositions.Count);
-                var maximalCapturePaths = allPaths.Where(ps => ps.CapturedPositions.Count == maxCaptured).ToList();
-                var capturePath = ChooseCapturePath(maximalCapturePaths);
-
-                piecePosition = capturePath.Path.First();
-                Board.MovePiece(ref piecePosition, capturePath.Path.Last());
-                Board.ClearSlots(capturePath.CapturedPositions.ToList());
-                move = capturePath;
-            }
-            else
-            {
-                Position targetPosition;
-                (piecePosition, targetPosition) = ChooseSimpleMove();
-                move = new Move(new List<Position> { piecePosition, targetPosition }.AsReadOnly());
-                Board.MovePiece(ref piecePosition, targetPosition);
-            }
-
-            if (Board.CanBeCrowned(piecePosition))
-            {
-                Board.CrownPiece(piecePosition);
-                move = move with { Crowned = true };
-            }
-
+            var moves = GetAllMoves();
+            var move = ChooseMove(moves);
+            Board.ApplyMove(move);
             return move;
         }
 
-        protected abstract (Position PiecePosition, Position TargetPosition) ChooseSimpleMove();
-        protected abstract Move ChooseCapturePath(List<Move> capturePaths);
+        protected List<Move> GetAllMoves()
+        {
+            var piecesHavingCapture = Board.GetPiecesHavingCapture(Color);
+            return piecesHavingCapture.Count > 0 ? GetAllCaptureMoves(piecesHavingCapture) : GetAllSimpleMoves();
+        }
 
+        protected abstract Move ChooseMove(List<Move> moves);
+
+        private List<Move> GetAllCaptureMoves(List<Position> piecesHavingCapture)
+        {
+            var allPaths = piecesHavingCapture.SelectMany(p => Board.GetPieceAllCapturePaths(p)).ToList();
+            var maxCaptured = allPaths.Max(move => move.CapturedPositions.Count);
+            var maximalCapturePaths = allPaths.Where(ps => ps.CapturedPositions.Count == maxCaptured).ToList();
+            return maximalCapturePaths;
+        }
+
+        private List<Move> GetAllSimpleMoves()
+        {
+            //Local function is introduced for a code readability.
+            IEnumerable<Move> GetAllPieceMoves(Position piecePosition)
+            {
+                return Board.GetPieceMoves(piecePosition)
+                    .Select(
+                        targetPosition =>
+                            new Move(
+                                new List<Position> { piecePosition, targetPosition }.AsReadOnly(),
+                                Board.CanBeCrowned(targetPosition)));
+            }
+
+            var piecesWithMove = Board.GetPlayerPieces(Color).Where(p => Board.HasPieceMove(p));
+            return piecesWithMove.SelectMany(piecePosition => GetAllPieceMoves(piecePosition)).ToList();
+        }
     }
 }

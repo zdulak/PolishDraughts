@@ -93,6 +93,16 @@ namespace PolishDraughts.Core.Entities.Boards
             return null;
         }
 
+        public void ApplyMove(Move move)
+        {
+            var piecePosition = move.Path.First();
+            MovePiece(ref piecePosition, move.Path.Last());
+
+            if (move.Crowned) CrownPiece(piecePosition);
+
+            if (move.CapturedPositions != null) ClearSlots(move.CapturedPositions.ToList());
+        }
+
         public void RevertMove(Move move)
         {
             var piecePosition = move.Path.Last();
@@ -246,7 +256,7 @@ namespace PolishDraughts.Core.Entities.Boards
             if (!piecesToCapture.Any())
             {
                 var capturedPieces = captured.Reverse().Select(p => this[p]).ToList().AsReadOnly();
-                allPaths.Add(new Move(path.Reverse().ToList().AsReadOnly(), false,captured.Reverse().ToList().AsReadOnly(), capturedPieces));
+                allPaths.Add(new Move(path.Reverse().ToList().AsReadOnly(), CanBeCrowned(path.Peek()),captured.Reverse().ToList().AsReadOnly(), capturedPieces));
                 return;
             }
 

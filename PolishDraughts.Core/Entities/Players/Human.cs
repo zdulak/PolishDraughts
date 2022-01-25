@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using PolishDraughts.Core.Entities.Positions;
 using PolishDraughts.Core.Enums;
 using PolishDraughts.Core.Interfaces;
@@ -14,22 +15,29 @@ namespace PolishDraughts.Core.Entities.Players
             _controller = controller;
         }
 
-        protected override (Position PiecePosition, Position TargetPosition) ChooseSimpleMove()
+        protected override Move ChooseMove(List<Move> moves) => moves.First().CapturedPositions != null
+            ? ChooseCapturePath(moves)
+            : ChooseSimpleMove(moves);
+
+        private Move ChooseSimpleMove(List<Move> moves)
         {
-            var piecePosition = ChoosePiece();
-            return (piecePosition, ChooseTargetPosition(piecePosition));
+            var piecePosition = ChoosePiece(moves);
+            return new Move(
+                new List<Position>()
+                    { piecePosition, ChooseTargetPosition(piecePosition, moves) }.AsReadOnly());
         }
 
-        protected override Move ChooseCapturePath(List<Move> capturePaths) => _controller.GetPath(capturePaths);
+        private Move ChooseCapturePath(List<Move> capturePaths) => _controller.GetPath(capturePaths);
 
-        private Position ChoosePiece()
+        private Position ChoosePiece(List<Move> moves)
         {
+            var piecesWithMove = moves.Select(m => m.Path.First()).ToList();
             while (true)
             {
                 var piecePosition = _controller.GetPosition(1);
                 if (Board[piecePosition] != null && Board[piecePosition].Color == Color)
                 {
-                    if (Board.HasPieceMove(piecePosition)) return piecePosition;
+                    if (piecesWithMove.Contains(piecePosition)) return piecePosition;
 
                     _controller.View.DisplayMsg("The piece does not have any move.");
                 }
@@ -39,12 +47,14 @@ namespace PolishDraughts.Core.Entities.Players
                 }
             }
         }
-        private Position ChooseTargetPosition(Position piecePosition)
+
+        private Position ChooseTargetPosition(Position piecePosition, List<Move> moves)
         {
             while (true)
             {
                 var targetPosition = _controller.GetPosition(2);
-                if (Board.IsValidMove(piecePosition, targetPosition)) return targetPosition;
+                var path = new List<Position>() { piecePosition, targetPosition };
+                if (moves.Any(m => m.Path.SequenceEqual(path))) return targetPosition;
 
                 _controller.View.DisplayMsg("Invalid move");
             }
