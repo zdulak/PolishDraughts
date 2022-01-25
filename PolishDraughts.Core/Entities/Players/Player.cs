@@ -36,15 +36,15 @@ namespace PolishDraughts.Core.Entities.Players
             return move;
         }
 
-        protected List<Move> GetAllMoves()
+        protected abstract Move ChooseMove(List<Move> moves);
+
+        protected virtual List<Move> GetAllMoves()
         {
             var piecesHavingCapture = Board.GetPiecesHavingCapture(Color);
             return piecesHavingCapture.Count > 0 ? GetAllCaptureMoves(piecesHavingCapture) : GetAllSimpleMoves();
         }
 
-        protected abstract Move ChooseMove(List<Move> moves);
-
-        private List<Move> GetAllCaptureMoves(List<Position> piecesHavingCapture)
+        protected List<Move> GetAllCaptureMoves(List<Position> piecesHavingCapture)
         {
             var allPaths = piecesHavingCapture.SelectMany(p => Board.GetPieceAllCapturePaths(p)).ToList();
             var maxCaptured = allPaths.Max(move => move.CapturedPositions.Count);
@@ -52,7 +52,7 @@ namespace PolishDraughts.Core.Entities.Players
             return maximalCapturePaths;
         }
 
-        private List<Move> GetAllSimpleMoves()
+        protected List<Move> GetAllSimpleMoves()
         {
             //Local function is introduced for a code readability.
             IEnumerable<Move> GetAllPieceMoves(Position piecePosition)

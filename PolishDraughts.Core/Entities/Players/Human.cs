@@ -15,29 +15,35 @@ namespace PolishDraughts.Core.Entities.Players
             _controller = controller;
         }
 
-        protected override Move ChooseMove(List<Move> moves) => moves.First().CapturedPositions != null
-            ? ChooseCapturePath(moves)
-            : ChooseSimpleMove(moves);
-
-        private Move ChooseSimpleMove(List<Move> moves)
+        protected override List<Move> GetAllMoves()
         {
-            var piecePosition = ChoosePiece(moves);
-            return new Move(
-                new List<Position>()
-                    { piecePosition, ChooseTargetPosition(piecePosition, moves) }.AsReadOnly());
+            var piecesHavingCapture = Board.GetPiecesHavingCapture(Color);
+            return piecesHavingCapture.Count > 0 ? GetAllCaptureMoves(piecesHavingCapture) : null;
         }
+
+        protected override Move ChooseMove(List<Move> moves) => moves?.FirstOrDefault()?.CapturedPositions != null
+            ? ChooseCapturePath(moves)
+            : ChooseSimpleMove();
 
         private Move ChooseCapturePath(List<Move> capturePaths) => _controller.GetPath(capturePaths);
 
-        private Position ChoosePiece(List<Move> moves)
+        private Move ChooseSimpleMove()
         {
-            var piecesWithMove = moves.Select(m => m.Path.First()).ToList();
+            var piecePosition = ChoosePiece();
+            var targetPosition = ChooseTargetPosition(piecePosition);
+            return new Move(
+                new List<Position>()
+                    { piecePosition, targetPosition }.AsReadOnly(), Board.CanBeCrowned(targetPosition));
+        }
+
+        private Position ChoosePiece()
+        {
             while (true)
             {
                 var piecePosition = _controller.GetPosition(1);
                 if (Board[piecePosition] != null && Board[piecePosition].Color == Color)
                 {
-                    if (piecesWithMove.Contains(piecePosition)) return piecePosition;
+                    if (Board.HasPieceMove(piecePosition)) return piecePosition;
 
                     _controller.View.DisplayMsg("The piece does not have any move.");
                 }
@@ -47,14 +53,12 @@ namespace PolishDraughts.Core.Entities.Players
                 }
             }
         }
-
-        private Position ChooseTargetPosition(Position piecePosition, List<Move> moves)
+        private Position ChooseTargetPosition(Position piecePosition)
         {
             while (true)
             {
                 var targetPosition = _controller.GetPosition(2);
-                var path = new List<Position>() { piecePosition, targetPosition };
-                if (moves.Any(m => m.Path.SequenceEqual(path))) return targetPosition;
+                if (Board.IsValidMove(piecePosition, targetPosition)) return targetPosition;
 
                 _controller.View.DisplayMsg("Invalid move");
             }
