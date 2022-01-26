@@ -12,7 +12,7 @@ namespace PolishDraughts.Core.Interfaces
         void MovePiece(ref Position piecePosition, Position targetPosition);
         void ClearSlots(List<Position> positions);
         void CrownPiece(Position position);
-        bool CanBeCrowned(Position position);
+        bool CanBeCrowned(Position piecePosition, Position targetPosition);
         bool HasPieceMove(Position piecePosition);
         bool HasPieceCapture(Position piecePosition);
         Position? GetPiecePosition(Piece piece);

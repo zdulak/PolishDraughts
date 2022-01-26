@@ -63,11 +63,11 @@ namespace PolishDraughts.Core.Entities.Boards
 
         public void CrownPiece(Position position) => this[position] = new King(this[position].Color);
 
-        public bool CanBeCrowned(Position position)
+        public bool CanBeCrowned(Position piecePosition, Position targetPosition)
         {
-            if (this[position] == null || this[position] is King) return false;
-            else if (this[position].Color == Color.Black && position.Row != 9) return false;
-            else if (this[position].Color == Color.White && position.Row != 0) return false;
+            if (this[piecePosition] == null || this[piecePosition] is King) return false;
+            else if (this[piecePosition].Color == Color.Black && targetPosition.Row != 9) return false;
+            else if (this[piecePosition].Color == Color.White && targetPosition.Row != 0) return false;
 
             return true;
         }
@@ -256,7 +256,12 @@ namespace PolishDraughts.Core.Entities.Boards
             if (!piecesToCapture.Any())
             {
                 var capturedPieces = captured.Reverse().Select(p => this[p]).ToList().AsReadOnly();
-                allPaths.Add(new Move(path.Reverse().ToList().AsReadOnly(), CanBeCrowned(path.Peek()),captured.Reverse().ToList().AsReadOnly(), capturedPieces));
+                allPaths.Add(
+                    new Move(
+                        path.Reverse().ToList().AsReadOnly(),
+                        CanBeCrowned(path.Peek(), path.Peek()),
+                        captured.Reverse().ToList().AsReadOnly(),
+                        capturedPieces));
                 return;
             }
 

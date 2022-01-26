@@ -5,13 +5,13 @@ using PolishDraughts.Core.Interfaces;
 
 namespace PolishDraughts.Core.Entities.Players
 {
-    public class MinimaxAi : Player
+    public class MinimaxAi : Computer
     {
-        public MinimaxAi(Color color, IBoard board) : base(color, board)
+        public MinimaxAi(Color color, IBoard board, IView view) : base(color, board, view)
         {
         }
 
-        protected override Move ChooseMove(List<Move> moves)
+        protected override Move GetComputerMove(List<Move> moves)
         {
             throw new System.NotImplementedException();
         }

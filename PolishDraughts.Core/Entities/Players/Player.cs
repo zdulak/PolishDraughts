@@ -28,9 +28,9 @@ namespace PolishDraughts.Core.Entities.Players
             return pieces.Count == 1 && Board[pieces.First()] is King;
         }
 
-        public virtual Move MakeMove()
+        public Move MakeMove()
         {
-            var moves = GetAllMoves();
+            var moves = GetMoves();
             var move = ChooseMove(moves);
             Board.ApplyMove(move);
             return move;
@@ -38,10 +38,10 @@ namespace PolishDraughts.Core.Entities.Players
 
         protected abstract Move ChooseMove(List<Move> moves);
 
-        protected virtual List<Move> GetAllMoves()
+        protected virtual List<Move> GetMoves()
         {
             var piecesHavingCapture = Board.GetPiecesHavingCapture(Color);
-            return piecesHavingCapture.Count > 0 ? GetAllCaptureMoves(piecesHavingCapture) : GetAllSimpleMoves();
+            return piecesHavingCapture.Count > 0 ? GetAllCaptureMoves(piecesHavingCapture) : null;
         }
 
         protected List<Move> GetAllCaptureMoves(List<Position> piecesHavingCapture)
@@ -50,23 +50,6 @@ namespace PolishDraughts.Core.Entities.Players
             var maxCaptured = allPaths.Max(move => move.CapturedPositions.Count);
             var maximalCapturePaths = allPaths.Where(ps => ps.CapturedPositions.Count == maxCaptured).ToList();
             return maximalCapturePaths;
-        }
-
-        protected List<Move> GetAllSimpleMoves()
-        {
-            //Local function is introduced for a code readability.
-            IEnumerable<Move> GetAllPieceMoves(Position piecePosition)
-            {
-                return Board.GetPieceMoves(piecePosition)
-                    .Select(
-                        targetPosition =>
-                            new Move(
-                                new List<Position> { piecePosition, targetPosition }.AsReadOnly(),
-                                Board.CanBeCrowned(targetPosition)));
-            }
-
-            var piecesWithMove = Board.GetPlayerPieces(Color).Where(p => Board.HasPieceMove(p));
-            return piecesWithMove.SelectMany(piecePosition => GetAllPieceMoves(piecePosition)).ToList();
         }
     }
 }

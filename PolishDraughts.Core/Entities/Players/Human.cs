@@ -15,12 +15,6 @@ namespace PolishDraughts.Core.Entities.Players
             _controller = controller;
         }
 
-        protected override List<Move> GetAllMoves()
-        {
-            var piecesHavingCapture = Board.GetPiecesHavingCapture(Color);
-            return piecesHavingCapture.Count > 0 ? GetAllCaptureMoves(piecesHavingCapture) : null;
-        }
-
         protected override Move ChooseMove(List<Move> moves) => moves?.FirstOrDefault()?.CapturedPositions != null
             ? ChooseCapturePath(moves)
             : ChooseSimpleMove();
@@ -33,7 +27,7 @@ namespace PolishDraughts.Core.Entities.Players
             var targetPosition = ChooseTargetPosition(piecePosition);
             return new Move(
                 new List<Position>()
-                    { piecePosition, targetPosition }.AsReadOnly(), Board.CanBeCrowned(targetPosition));
+                    { piecePosition, targetPosition }.AsReadOnly(), Board.CanBeCrowned(piecePosition, targetPosition));
         }
 
         private Position ChoosePiece()
