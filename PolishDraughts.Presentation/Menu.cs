@@ -13,11 +13,11 @@ namespace PolishDraughts.Presentation
         private readonly IController _controller;
         private readonly Func<Player[], Action, IGame> _gameFactory;
         private readonly Func<Color, Human> _humanFactory;
-        private readonly Func<Color, Computer> _computerFactory;
+        private readonly Func<Color, MinimaxAi> _computerFactory;
         private readonly Player[] _players;
 
         public Menu(IView view, IController controller, Func<Player[], Action, IGame> gameFactory, Func<Color, Human> humanFactory,
-            Func<Color, Computer> computerFactory)
+            Func<Color, MinimaxAi> computerFactory)
         {
             _view = view;
             _controller = controller;

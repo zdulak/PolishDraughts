@@ -9,7 +9,7 @@ namespace PolishDraughts.Core.Interfaces
         public event Action QuitCommand;
         IView View { get; }
         Position GetPosition(int kind);
-        CapturePath GetPath(List<CapturePath> capturePaths);
+        Move GetPath(List<Move> capturePaths);
         int GetOption(int optionsNumber, Action messageView, bool clearScreen = false);
         void GetExitKey();
         void Quit();

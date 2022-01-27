@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using PolishDraughts.Core.Entities.Positions;
 using PolishDraughts.Core.Enums;
@@ -7,44 +8,52 @@ using PolishDraughts.Core.Interfaces;
 
 namespace PolishDraughts.Core.Entities.Players
 {
-    public class Computer : Player
+    public abstract class Computer : Player
     {
         private readonly IView _view;
-        private readonly Random _random;
         public Computer(Color color, IBoard board, IView view) : base(color, board)
         {
             _view = view;
-            _random = new Random();
         }
 
-        protected override Position ChoosePiece()
+        protected override List<Move> GetMoves()
         {
-            var piecesWithMove = Board.GetPlayerPieces(Color)
-                .Where(p => Board.HasPieceMove(p))
-                .ToList();
-            return GetPlayerChoiceFromList(piecesWithMove);
+            var piecesHavingCapture = Board.GetPiecesHavingCapture(Color);
+            return piecesHavingCapture.Count > 0 ? GetAllCaptureMoves(piecesHavingCapture) : GetAllSimpleMoves();
         }
 
-        protected override Position ChooseTargetPosition(Position piecePosition)
+        protected override Move ChooseMove(List<Move> moves)
         {
-            var pieceMoves = Board.GetPieceMoves(piecePosition).ToList();
-            var targetPosition = GetPlayerChoiceFromList(pieceMoves);
-            _view.DisplayMsg("Computer makes a move: " + $"{piecePosition}->{targetPosition}");
-            return targetPosition;
+            var move = GetComputerMove(moves);
+            if (move.CapturedPieces == null)
+            {
+                _view.DisplayMsg("Computer makes a move: " + $"{move.Path.First()}->{move.Path.Last()}");
+            }
+            else
+            {
+                _view.DisplayMsg($"Computer makes a mandatory capture: {move}");
+            }
+
+            return move;
         }
 
-        protected override CapturePath ChooseFromList(List<CapturePath> capturePaths)
+        protected List<Move> GetAllSimpleMoves()
         {
-            var capturePath = GetPlayerChoiceFromList(capturePaths);
-            _view.DisplayMsg($"Computer makes a mandatory capture: {capturePath}");
-            return capturePath;
+            //Local function is introduced for a code readability.
+            IEnumerable<Move> GetAllPieceMoves(Position piecePosition)
+            {
+                return Board.GetPieceMoves(piecePosition)
+                    .Select(
+                        targetPosition =>
+                            new Move(
+                                new List<Position> { piecePosition, targetPosition }.AsReadOnly(),
+                                Board.CanBeCrowned(piecePosition, targetPosition)));
+            }
+
+            var piecesWithMove = Board.GetPlayerPieces(Color).Where(p => Board.HasPieceMove(p));
+            return piecesWithMove.SelectMany(piecePosition => GetAllPieceMoves(piecePosition)).ToList();
         }
 
-
-        private T GetPlayerChoiceFromList<T>(IReadOnlyList<T> elements)
-        {
-            System.Threading.Thread.Sleep(300);
-            return elements[_random.Next(elements.Count)];
-        }
+        protected abstract Move GetComputerMove(List<Move> moves);
     }
 }
