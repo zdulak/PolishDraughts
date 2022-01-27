@@ -10,15 +10,16 @@ namespace PolishDraughts.Core.Entities.Players
     public class MinimaxAi : Computer
     {
         private const int KingValue = 4;
-        private readonly int _numberPieces;
+        private const int MaxValue = 2 * Boards.Board.Size * KingValue;
 
-        public MinimaxAi(Color color, IBoard board, IView view) : base(color, board, view) =>
-            _numberPieces = 2 * Boards.Board.Size;
+        public MinimaxAi(Color color, IBoard board, IView view) : base(color, board, view)
+        {
+        }
 
         protected override Move GetComputerMove(List<Move> moves)
         {
             Move finalMove = null;
-            var utility = (Color == Color.White) ? -1 * _numberPieces * KingValue : _numberPieces * KingValue;
+            var utility = Color == Color.White ? -MaxValue : MaxValue;
             foreach (var move in moves)
             {
                 Board.ApplyMove(move);
@@ -37,12 +38,22 @@ namespace PolishDraughts.Core.Entities.Players
 
         private int GetMoveUtility(Color playerColor, int depth)
         {
+            if (Board.IsDraw())
+            {
+                return 0;
+            }
+
+            if (Board.HasWon(playerColor.Opposite()))
+            {
+                return playerColor.Opposite() == Color.White ? MaxValue : -MaxValue;
+            }
+
             if (depth < 1)
             {
                 return Utility();
             }
 
-            var utility = (playerColor == Color.White) ? -1 * _numberPieces * KingValue : _numberPieces * KingValue;
+            var utility = playerColor == Color.White ? -MaxValue : MaxValue;
             foreach (var move in GetMoves())
             {
                 Board.ApplyMove(move);

@@ -16,6 +16,8 @@ namespace PolishDraughts.Core.Interfaces
         bool HasPieceMove(Position piecePosition);
         bool HasPieceCapture(Position piecePosition);
         Position? GetPiecePosition(Piece piece);
+        bool IsDraw();
+        bool HasWon(Color color);
         void ApplyMove(Move move);
         void RevertMove(Move move);
         List<Position> GetPiecesHavingCapture(Color color);

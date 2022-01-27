@@ -93,6 +93,17 @@ namespace PolishDraughts.Core.Entities.Boards
             return null;
         }
 
+        public bool IsDraw()
+        {
+            var colors = new[] { Color.White, Color.Black };
+            return colors.All(color => HasOnlyKing(color)) || colors.All(c => !HasMove(c));
+        }
+
+        public bool HasWon(Color color)
+        {
+            return !HasPieces(color.Opposite()) || (HasMove(color) && !HasMove(color.Opposite()));
+        }
+
         public void ApplyMove(Move move)
         {
             var piecePosition = move.Path.First();
@@ -123,7 +134,7 @@ namespace PolishDraughts.Core.Entities.Boards
         }
 
         public List<Position> GetPiecesHavingCapture(Color color) =>
-            GetPlayerPieces(color).Where(HasPieceCapture).ToList();
+            GetPlayerPieces(color).Where(position => HasPieceCapture(position)).ToList();
 
         public IEnumerable<Position> GetPlayerPieces(Color color)
         {
@@ -284,6 +295,16 @@ namespace PolishDraughts.Core.Entities.Boards
 
                 this[captured.Pop()].Color = this[piecePosition].Color.Opposite();
             }
+        }
+
+        private bool HasPieces(Color color) => GetPlayerPieces(color).Any();
+
+        private bool HasMove(Color color) => GetPlayerPieces(color).Any(position => HasPieceMove(position));
+
+        private bool HasOnlyKing(Color color)
+        {
+            var pieces = GetPlayerPieces(color).ToList();
+            return pieces.Count == 1 && this[pieces.First()] is King;
         }
     }
 }
