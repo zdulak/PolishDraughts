@@ -299,7 +299,7 @@ namespace PolishDraughts.Core.Entities.Boards
 
         private bool HasPieces(Color color) => GetPlayerPieces(color).Any();
 
-        private bool HasMove(Color color) => GetPlayerPieces(color).Any(position => HasPieceMove(position));
+        public bool HasMove(Color color) => GetPlayerPieces(color).Any(position => HasPieceMove(position));
 
         private bool HasOnlyKing(Color color)
         {

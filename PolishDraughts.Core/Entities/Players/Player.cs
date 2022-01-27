@@ -18,16 +18,6 @@ namespace PolishDraughts.Core.Entities.Players
             Color = color;
         }
 
-        public bool HasPieces() => Board.GetPlayerPieces(Color).Any();
-
-        public bool HasMove() => Board.GetPlayerPieces(Color).Any(p => Board.HasPieceMove(p));
-
-        public bool HasOnlyKing()
-        {
-            var pieces = Board.GetPlayerPieces(Color).ToList();
-            return pieces.Count == 1 && Board[pieces.First()] is King;
-        }
-
         public Move MakeMove()
         {
             var moves = GetMoves();
