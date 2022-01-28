@@ -11,11 +11,11 @@ namespace PolishDraughts.Presentation
 {
     public class View : IView
     {
-        private readonly string _line = new string(' ', 3) + new string('-', 4 * Board.Size + 1);
+        private readonly string _line = new string(' ', 3) + new string('-', 4 * IBoard.Size + 1);
         //A   B   C   etc.
         private readonly string _letters = string.Join(
             new string(' ', 3),
-            Enumerable.Range(0, Board.Size).Select(n => (char) (n + 65)));
+            Enumerable.Range(0, IBoard.Size).Select(n => (char) (n + 65)));
 
         public void Clear() => Console.Clear();
 
@@ -24,11 +24,11 @@ namespace PolishDraughts.Presentation
         public void DisplayBoard(IBoard board)
         {
             Console.WriteLine();
-            for (var row = 0; row < Board.Size; row++)
+            for (var row = 0; row < IBoard.Size; row++)
             {
                 Console.WriteLine(_line);
-                Console.Write((Board.Size - row).ToString().PadRight(3));
-                for (var col = 0; col < Board.Size; col++)
+                Console.Write((IBoard.Size - row).ToString().PadRight(3));
+                for (var col = 0; col < IBoard.Size; col++)
                 {
                     Console.Write("|");
                     var position = new Position(row, col);

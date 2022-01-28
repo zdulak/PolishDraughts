@@ -35,7 +35,7 @@ namespace PolishDraughts.Core.Entities.Players
         }
         protected override List<Move> GetMoves()
         {
-            var piecesHavingCapture = Board.GetPiecesHavingCapture(Color);
+            var piecesHavingCapture = Board.GetPlayerPiecesHavingCapture(Color);
             return piecesHavingCapture.Count > 0 ? GetAllCaptureMoves(piecesHavingCapture) : GetAllSimpleMoves();
         }
 
@@ -44,7 +44,7 @@ namespace PolishDraughts.Core.Entities.Players
             //Local function is introduced for a code readability.
             IEnumerable<Move> GetAllPieceMoves(Position piecePosition)
             {
-                return Board.GetPieceMoves(piecePosition)
+                return Board.GetPieceSimpleMoves(piecePosition)
                     .Select(
                         targetPosition =>
                             new Move(
@@ -52,7 +52,7 @@ namespace PolishDraughts.Core.Entities.Players
                                 Board.CanBeCrowned(piecePosition, targetPosition)));
             }
 
-            var piecesWithMove = Board.GetPlayerPieces(Color).Where(p => Board.HasPieceMove(p));
+            var piecesWithMove = Board.GetPlayerPieces(Color).Where(p => Board.HasPieceSimpleMove(p));
             return piecesWithMove.SelectMany(piecePosition => GetAllPieceMoves(piecePosition)).ToList();
         }
     }

@@ -37,7 +37,7 @@ namespace PolishDraughts.Core.Entities.Players
                 var piecePosition = _controller.GetPosition(1);
                 if (Board[piecePosition] != null && Board[piecePosition].Color == Color)
                 {
-                    if (Board.HasPieceMove(piecePosition)) return piecePosition;
+                    if (Board.HasPieceSimpleMove(piecePosition)) return piecePosition;
 
                     _controller.View.DisplayMsg("The piece does not have any move.");
                 }
@@ -53,7 +53,7 @@ namespace PolishDraughts.Core.Entities.Players
             while (true)
             {
                 var targetPosition = _controller.GetPosition(2);
-                if (Board.IsValidMove(piecePosition, targetPosition)) return targetPosition;
+                if (Board.IsValidSimpleMove(piecePosition, targetPosition)) return targetPosition;
 
                 _controller.View.DisplayMsg("Invalid move");
             }

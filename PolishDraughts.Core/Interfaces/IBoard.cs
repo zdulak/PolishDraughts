@@ -7,26 +7,22 @@ namespace PolishDraughts.Core.Interfaces
 {
     public interface IBoard : IDependency
     {
+        const int Size = 10;
         Piece this[Position position] { get; }
         void Reset();
-        bool IsDraw();
-        bool HasWon(Color color);
         void ApplyMove(Move move);
         void RevertMove(Move move);
-        void MovePiece(ref Position piecePosition, Position targetPosition);
-        void ClearSlots(List<Position> positions);
-        void CrownPiece(Position position);
-        bool CanBeCrowned(Position piecePosition, Position targetPosition);
-        bool HasPieceMove(Position piecePosition);
-        bool HasPieceCapture(Position piecePosition);
-        Position? GetPiecePosition(Piece piece);
-        bool IsValidMove(Position piecePosition, Position targetPosition);
-        List<Position> GetAfterCapturePositions(Position piecePosition, Position capturedPosition);
-        IEnumerable<Position> GetPieceMoves(Position piecePosition);
-        IEnumerable<Position> GetPiecesToCapture(Position piecePosition);
-        List<Move> GetPieceAllCapturePaths(Position piecePosition);
-        public bool HasMove(Color color);
-        List<Position> GetPiecesHavingCapture(Color color);
+        bool IsDraw();
+        bool HasWon(Color color);
+        bool HasMove(Color color);
+        List<Position> GetPlayerPiecesHavingCapture(Color color);
         IEnumerable<Position> GetPlayerPieces(Color color);
+        bool CanBeCrowned(Position piecePosition, Position targetPosition);
+        bool IsValidSimpleMove(Position piecePosition, Position targetPosition);
+        bool HasPieceSimpleMove(Position piecePosition);
+        IEnumerable<Position> GetPieceSimpleMoves(Position piecePosition);
+        List<Move> GetPieceAllCapturePaths(Position piecePosition);
+       
+        //Position? GetPiecePosition(Piece piece);
     }
 }

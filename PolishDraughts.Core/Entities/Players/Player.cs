@@ -31,7 +31,7 @@ namespace PolishDraughts.Core.Entities.Players
 
         protected virtual List<Move> GetMoves()
         {
-            var piecesHavingCapture = Board.GetPiecesHavingCapture(Color);
+            var piecesHavingCapture = Board.GetPlayerPiecesHavingCapture(Color);
             return piecesHavingCapture.Count > 0 ? GetAllCaptureMoves(piecesHavingCapture) : null;
         }
 
