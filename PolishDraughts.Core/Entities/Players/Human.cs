@@ -47,6 +47,7 @@ namespace PolishDraughts.Core.Entities.Players
                 }
             }
         }
+
         private Position ChooseTargetPosition(Position piecePosition)
         {
             while (true)

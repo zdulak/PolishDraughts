@@ -8,11 +8,12 @@ namespace PolishDraughts.Core.Entities.Games
 {
     public class Game : IGame
     {
+        private readonly IBoard _board;
         private readonly IController _controller;
-        private readonly IView _view;
         private readonly Player[] _players;
         private readonly Action _returnPoint;
-        private readonly IBoard _board;
+        private readonly IView _view;
+
         public Game(IController controller, IView view, IBoard board, Player[] players, Action returnPoint)
         {
             _controller = controller;
@@ -21,6 +22,7 @@ namespace PolishDraughts.Core.Entities.Games
             _players = players;
             _returnPoint = returnPoint;
         }
+
         public void Run()
         {
             _controller.QuitCommand += Abort;

@@ -11,16 +11,13 @@ namespace PolishDraughts.Core.Entities.Players
     public abstract class Computer : Player
     {
         private readonly IView _view;
+
         public Computer(Color color, IBoard board, IView view) : base(color, board)
         {
             _view = view;
         }
 
-        protected override List<Move> GetMoves()
-        {
-            var piecesHavingCapture = Board.GetPiecesHavingCapture(Color);
-            return piecesHavingCapture.Count > 0 ? GetAllCaptureMoves(piecesHavingCapture) : GetAllSimpleMoves();
-        }
+        protected abstract Move GetComputerMove(List<Move> moves);
 
         protected override Move ChooseMove(List<Move> moves)
         {
@@ -35,6 +32,11 @@ namespace PolishDraughts.Core.Entities.Players
             }
 
             return move;
+        }
+        protected override List<Move> GetMoves()
+        {
+            var piecesHavingCapture = Board.GetPiecesHavingCapture(Color);
+            return piecesHavingCapture.Count > 0 ? GetAllCaptureMoves(piecesHavingCapture) : GetAllSimpleMoves();
         }
 
         protected List<Move> GetAllSimpleMoves()
@@ -53,7 +55,5 @@ namespace PolishDraughts.Core.Entities.Players
             var piecesWithMove = Board.GetPlayerPieces(Color).Where(p => Board.HasPieceMove(p));
             return piecesWithMove.SelectMany(piecePosition => GetAllPieceMoves(piecePosition)).ToList();
         }
-
-        protected abstract Move GetComputerMove(List<Move> moves);
     }
 }

@@ -9,14 +9,15 @@ namespace PolishDraughts.Core.Entities.Players
 {
     public abstract class Player
     {
-        public Color Color { get; }
-
         protected readonly IBoard Board;
+
         protected Player(Color color, IBoard board)
         {   
             Board = board;
             Color = color;
         }
+
+        public Color Color { get; }
 
         public Move MakeMove()
         {
