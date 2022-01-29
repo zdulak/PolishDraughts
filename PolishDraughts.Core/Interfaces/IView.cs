@@ -16,5 +16,6 @@ namespace PolishDraughts.Core.Interfaces
         void DisplayRules();
         void DisplayAbout();
         void DisplayPlayerChoice(Color color);
+        public void DisplayComputerChoice();
     }
 }

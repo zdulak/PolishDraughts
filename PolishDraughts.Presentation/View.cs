@@ -71,6 +71,9 @@ namespace PolishDraughts.Presentation
         public void DisplayPlayerChoice(Color color) => Console.WriteLine(
             $"Please select type of player for {color.ToString().ToLower()} pieces or return to the main menu.");
 
+        public void DisplayComputerChoice() =>
+            Console.WriteLine("Please select type of a computer player or return to the new game menu");
+
         private void DisplaySlot(Piece piece, Position position)
         {
             switch (piece)
