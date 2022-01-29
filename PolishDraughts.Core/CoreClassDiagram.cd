@@ -2,37 +2,13 @@
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="PolishDraughts.Core.Entities.Players.Computer">
     <Position X="7.75" Y="7.75" Width="2.25" />
-    <InheritanceLine Type="PolishDraughts.Core.Entities.Players.Player" FixedFromPoint="true">
-      <Path>
-        <Point X="10.312" Y="5.95" />
-        <Point X="10.312" Y="7.375" />
-        <Point X="8.875" Y="7.375" />
-        <Point X="8.875" Y="7.75" />
-      </Path>
-    </InheritanceLine>
-    <AssociationLine Name="_view" Type="PolishDraughts.Core.Interfaces.IView" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="10" Y="9.812" />
-        <Point X="14.125" Y="9.812" />
-        <Point X="14.125" Y="2.688" />
-        <Point X="13.75" Y="2.688" />
-      </Path>
-    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAgAAAAAAAAIAAADgAAAAAAAE=</HashCode>
+      <HashCode>AABCAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAA=</HashCode>
       <FileName>Entities\Players\Computer.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Field Name="_view" />
-    </ShowAsAssociation>
   </Class>
   <Class Name="PolishDraughts.Core.Entities.Games.Game">
     <Position X="9.5" Y="0.5" Width="1.5" />
-    <AssociationLine Name="_players" Type="PolishDraughts.Core.Entities.Players.Player">
-      <MemberNameLabel ManuallyPlaced="true">
-        <Position X="0.11" Y="0.605" />
-      </MemberNameLabel>
-    </AssociationLine>
     <AssociationLine Name="_controller" Type="PolishDraughts.Core.Interfaces.IController" FixedFromPoint="true" FixedToPoint="true">
       <Path>
         <Point X="11" Y="1.647" />
@@ -41,18 +17,23 @@
         <Point X="12.25" Y="4.875" />
       </Path>
       <MemberNameLabel ManuallyPlaced="true">
-        <Position X="0.472" Y="2.047" />
+        <Position X="0.464" Y="1.982" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="_players" Type="PolishDraughts.Core.Entities.Players.Player">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.11" Y="0.605" />
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAACAAEAAAAAAAABAAAAAAACAAAEAAAAI=</HashCode>
+      <HashCode>AAAAAAAAAAAAACAAEAAAAAAIABAAAAAAACAAAEAAAAI=</HashCode>
       <FileName>Entities\Games\Game.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Field Name="_view" />
-      <Field Name="_players" />
       <Field Name="_board" />
       <Field Name="_controller" />
+      <Field Name="_players" />
+      <Field Name="_view" />
     </ShowAsAssociation>
     <Lollipop Position="0.2" />
   </Class>
@@ -65,7 +46,7 @@
       </Path>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAIAAAAAAAAAAAABQAAoAAABgAgCAAAAA=</HashCode>
+      <HashCode>AABAAAAAAAAAAAAAACYAAAAAAAAAAgAAAAAAgCAAAAA=</HashCode>
       <FileName>Entities\Players\Player.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -74,11 +55,11 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="PolishDraughts.Core.Entities.Pieces.Piece">
-    <Position X="4.25" Y="4.75" Width="1.5" />
+    <Position X="4.25" Y="5" Width="1.5" />
     <AssociationLine Name="MoveDirections" Type="PolishDraughts.Core.Entities.Positions.Position" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="4.25" Y="5.5" />
-        <Point X="1.688" Y="5.5" />
+        <Point X="4.25" Y="5.75" />
+        <Point X="1.688" Y="5.75" />
         <Point X="1.688" Y="3.978" />
       </Path>
       <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
@@ -86,7 +67,7 @@
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAgAAEAAQ=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAABAAgAAEAAQ=</HashCode>
       <FileName>Entities\Pieces\Piece.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -112,26 +93,37 @@
   </Class>
   <Class Name="PolishDraughts.Core.Entities.Players.Human">
     <Position X="10.5" Y="7.75" Width="2" />
-    <InheritanceLine Type="PolishDraughts.Core.Entities.Players.Player" FixedFromPoint="true">
+    <AssociationLine Name="_controller" Type="PolishDraughts.Core.Interfaces.IController" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="10.312" Y="5.95" />
-        <Point X="10.312" Y="7.375" />
-        <Point X="11.5" Y="7.375" />
-        <Point X="11.5" Y="7.75" />
+        <Point X="12.5" Y="9.062" />
+        <Point X="12.938" Y="9.062" />
+        <Point X="12.938" Y="6.954" />
       </Path>
-    </InheritanceLine>
-    <AssociationLine Name="_controller" Type="PolishDraughts.Core.Interfaces.IController">
       <MemberNameLabel ManuallyPlaced="true">
-        <Position X="0.473" Y="-0.421" />
+        <Position X="-0.977" Y="0.636" />
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAABgAAEAAAAA=</HashCode>
+      <HashCode>AABAAAAAgAAAAAAAAAQABAAAAAAAAIAAABAAAEAAAAA=</HashCode>
       <FileName>Entities\Players\Human.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Field Name="_controller" />
     </ShowAsAssociation>
+  </Class>
+  <Class Name="PolishDraughts.Core.Entities.Players.MinimaxAi">
+    <Position X="7" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAADAAAAAAAAAAAgAAAAAAAAAAAAAABAAAAgAAAAAAA=</HashCode>
+      <FileName>Entities\Players\MinimaxAi.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PolishDraughts.Core.Entities.Players.RandomAi">
+    <Position X="9.25" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>Entities\Players\RandomAi.cs</FileName>
+    </TypeIdentifier>
   </Class>
   <Struct Name="PolishDraughts.Core.Entities.Positions.Position">
     <Position X="0.75" Y="0.5" Width="2" />
@@ -143,12 +135,12 @@
   <Interface Name="PolishDraughts.Core.Interfaces.IBoard">
     <Position X="4" Y="0.5" Width="2" />
     <AssociationLine Name="this[PolishDraughts.Core.Entities.Positions.Position]" Type="PolishDraughts.Core.Entities.Pieces.Piece">
-      <MemberNameLabel ManuallyPlaced="true">
-        <Position X="0.129" Y="0.301" />
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="-0.703" Y="0.187" Height="0.162" Width="0.5" />
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>EAAAAAAAAIAQBAIACIhCCAACAACAAAACACAAAAAAAAA=</HashCode>
+      <HashCode>AAIgAAAAEMAAhAAACIACQAAAAhAAAAAAAAACgAAAAAA=</HashCode>
       <FileName>Interfaces\IBoard.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -158,8 +150,8 @@
   <Interface Name="PolishDraughts.Core.Interfaces.IController">
     <Position X="12.25" Y="4.5" Width="1.5" />
     <AssociationLine Name="View" Type="PolishDraughts.Core.Interfaces.IView">
-      <MemberNameLabel ManuallyPlaced="true">
-        <Position X="0.125" Y="0.84" />
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="0.1" Y="0.652" Height="0.162" Width="0.559" />
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
@@ -173,12 +165,12 @@
   <Interface Name="PolishDraughts.Core.Interfaces.IView">
     <Position X="12.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>IAAAAAAAIAAAAIAEgAABAAAEAAABAAAAAAAAAABAAAA=</HashCode>
+      <HashCode>IAAAAAAAIAAAAIAEgAABAAAEEAABAAAAAAAAAABAAAA=</HashCode>
       <FileName>Interfaces\IView.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Enum Name="PolishDraughts.Core.Enums.Color">
-    <Position X="7" Y="4.75" Width="1.5" />
+    <Position X="7" Y="5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAEAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAEAAAA=</HashCode>
       <FileName>Enums\Color.cs</FileName>

@@ -12,7 +12,7 @@ namespace PolishDraughts.Core.Entities.Players
     {
         private readonly IView _view;
 
-        public Computer(Color color, IBoard board, IView view) : base(color, board)
+        protected Computer(Color color, IBoard board, IView view) : base(color, board)
         {
             _view = view;
         }
