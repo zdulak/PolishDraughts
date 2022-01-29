@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using PolishDraughts.Core.Entities.Pieces;
 using PolishDraughts.Core.Entities.Positions;
@@ -24,6 +25,7 @@ namespace PolishDraughts.Core.Entities.Players
             {
                 Board.ApplyMove(move);
                 var moveUtility = GetMoveUtility(Color.Opposite(), 3);
+                //Console.WriteLine($"Utility {moveUtility}: {move}");
                 Board.RevertMove(move);
 
                 if ((Color == Color.White && moveUtility > utility) || (Color == Color.Black && moveUtility < utility))
@@ -54,7 +56,7 @@ namespace PolishDraughts.Core.Entities.Players
             }
 
             var utility = playerColor == Color.White ? -MaxValue : MaxValue;
-            foreach (var move in GetMoves())
+            foreach (var move in GetMoves(playerColor))
             {
                 Board.ApplyMove(move);
                 var moveUtility = GetMoveUtility(playerColor.Opposite(), depth - 1);

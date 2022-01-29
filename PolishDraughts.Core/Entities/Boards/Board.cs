@@ -137,7 +137,7 @@ namespace PolishDraughts.Core.Entities.Boards
 
         public bool HasPieceSimpleMove(Position piecePosition) => GetPieceSimpleMoves(piecePosition).Any();
 
-        public IEnumerable<Position> GetPieceSimpleMoves(Position piecePosition)
+        public IEnumerable<Move> GetPieceSimpleMoves(Position piecePosition)
         {
             if (this[piecePosition] == null)
             {
@@ -152,7 +152,10 @@ namespace PolishDraughts.Core.Entities.Boards
                 {
                     if (this[position] == null)
                     {
-                        yield return position;
+                        yield return new Move(
+                            new List<Position> { piecePosition, position }.AsReadOnly(),
+                            CanBeCrowned(piecePosition, position));
+
                         position += unitMove;
                     }
                     else

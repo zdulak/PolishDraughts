@@ -21,7 +21,7 @@ namespace PolishDraughts.Core.Entities.Players
 
         public Move MakeMove()
         {
-            var moves = GetMoves();
+            var moves = GetMoves(Color);
             var move = ChooseMove(moves);
             Board.ApplyMove(move);
             return move;
@@ -29,10 +29,10 @@ namespace PolishDraughts.Core.Entities.Players
 
         protected abstract Move ChooseMove(List<Move> moves);
 
-        protected virtual List<Move> GetMoves()
+        protected virtual List<Move> GetMoves(Color color)
         {
-            var piecesHavingCapture = Board.GetPlayerPiecesHavingCapture(Color);
-            return piecesHavingCapture.Count > 0 ? GetAllCaptureMoves(piecesHavingCapture) : null;
+            var piecesHavingCapture = Board.GetPlayerPiecesHavingCapture(color);
+            return piecesHavingCapture.Count > 0 ? GetAllCaptureMoves(piecesHavingCapture) : GetPlayerAllSimpleMoves(color);
         }
 
         protected List<Move> GetAllCaptureMoves(List<Position> piecesHavingCapture)
@@ -42,5 +42,9 @@ namespace PolishDraughts.Core.Entities.Players
             var maximalCapturePaths = allPaths.Where(ps => ps.CapturedPositions.Count == maxCaptured).ToList();
             return maximalCapturePaths;
         }
+
+        protected List<Move> GetPlayerAllSimpleMoves(Color color) => Board.GetPlayerPieces(color)
+            .SelectMany(piecePosition => Board.GetPieceSimpleMoves(piecePosition))
+            .ToList();
     }
 }
