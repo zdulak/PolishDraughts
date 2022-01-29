@@ -9,24 +9,15 @@ namespace PolishDraughts.Core.Entities.Players
 {
     public abstract class Player
     {
-        public Color Color { get; }
-
         protected readonly IBoard Board;
+
         protected Player(Color color, IBoard board)
         {   
             Board = board;
             Color = color;
         }
 
-        public bool HasPieces() => Board.GetPlayerPieces(Color).Any();
-
-        public bool HasMove() => Board.GetPlayerPieces(Color).Any(p => Board.HasPieceMove(p));
-
-        public bool HasOnlyKing()
-        {
-            var pieces = Board.GetPlayerPieces(Color).ToList();
-            return pieces.Count == 1 && Board[pieces.First()] is King;
-        }
+        public Color Color { get; }
 
         public Move MakeMove()
         {
@@ -40,7 +31,7 @@ namespace PolishDraughts.Core.Entities.Players
 
         protected virtual List<Move> GetMoves()
         {
-            var piecesHavingCapture = Board.GetPiecesHavingCapture(Color);
+            var piecesHavingCapture = Board.GetPlayerPiecesHavingCapture(Color);
             return piecesHavingCapture.Count > 0 ? GetAllCaptureMoves(piecesHavingCapture) : null;
         }
 

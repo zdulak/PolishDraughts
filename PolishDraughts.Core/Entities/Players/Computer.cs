@@ -11,16 +11,13 @@ namespace PolishDraughts.Core.Entities.Players
     public abstract class Computer : Player
     {
         private readonly IView _view;
+
         public Computer(Color color, IBoard board, IView view) : base(color, board)
         {
             _view = view;
         }
 
-        protected override List<Move> GetMoves()
-        {
-            var piecesHavingCapture = Board.GetPiecesHavingCapture(Color);
-            return piecesHavingCapture.Count > 0 ? GetAllCaptureMoves(piecesHavingCapture) : GetAllSimpleMoves();
-        }
+        protected abstract Move GetComputerMove(List<Move> moves);
 
         protected override Move ChooseMove(List<Move> moves)
         {
@@ -36,13 +33,18 @@ namespace PolishDraughts.Core.Entities.Players
 
             return move;
         }
+        protected override List<Move> GetMoves()
+        {
+            var piecesHavingCapture = Board.GetPlayerPiecesHavingCapture(Color);
+            return piecesHavingCapture.Count > 0 ? GetAllCaptureMoves(piecesHavingCapture) : GetAllSimpleMoves();
+        }
 
         protected List<Move> GetAllSimpleMoves()
         {
             //Local function is introduced for a code readability.
             IEnumerable<Move> GetAllPieceMoves(Position piecePosition)
             {
-                return Board.GetPieceMoves(piecePosition)
+                return Board.GetPieceSimpleMoves(piecePosition)
                     .Select(
                         targetPosition =>
                             new Move(
@@ -50,10 +52,8 @@ namespace PolishDraughts.Core.Entities.Players
                                 Board.CanBeCrowned(piecePosition, targetPosition)));
             }
 
-            var piecesWithMove = Board.GetPlayerPieces(Color).Where(p => Board.HasPieceMove(p));
+            var piecesWithMove = Board.GetPlayerPieces(Color).Where(p => Board.HasPieceSimpleMove(p));
             return piecesWithMove.SelectMany(piecePosition => GetAllPieceMoves(piecePosition)).ToList();
         }
-
-        protected abstract Move GetComputerMove(List<Move> moves);
     }
 }

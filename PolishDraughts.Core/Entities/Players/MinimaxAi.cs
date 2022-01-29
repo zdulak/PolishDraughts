@@ -10,7 +10,7 @@ namespace PolishDraughts.Core.Entities.Players
     public class MinimaxAi : Computer
     {
         private const int KingValue = 4;
-        private const int MaxValue = 2 * Boards.Board.Size * KingValue;
+        private const int MaxValue = 2 * IBoard.Size * KingValue;
 
         public MinimaxAi(Color color, IBoard board, IView view) : base(color, board, view)
         {

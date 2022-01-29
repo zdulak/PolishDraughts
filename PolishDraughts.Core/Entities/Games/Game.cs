@@ -8,11 +8,12 @@ namespace PolishDraughts.Core.Entities.Games
 {
     public class Game : IGame
     {
+        private readonly IBoard _board;
         private readonly IController _controller;
-        private readonly IView _view;
         private readonly Player[] _players;
         private readonly Action _returnPoint;
-        private readonly IBoard _board;
+        private readonly IView _view;
+
         public Game(IController controller, IView view, IBoard board, Player[] players, Action returnPoint)
         {
             _controller = controller;
@@ -21,6 +22,7 @@ namespace PolishDraughts.Core.Entities.Games
             _players = players;
             _returnPoint = returnPoint;
         }
+
         public void Run()
         {
             _controller.QuitCommand += Abort;
@@ -36,20 +38,7 @@ namespace PolishDraughts.Core.Entities.Games
             {
                 foreach (var player in _players)
                 {
-                    if (!player.HasPieces())
-                    {
-                        winner = player.Color.Opposite();
-                        isPlayed = false;
-                        break;
-                    }
-
-                    if (_players.All(p => p.HasOnlyKing()))
-                    {
-                        isPlayed = false;
-                        break;
-                    }
-
-                    if (player.HasMove())
+                    if (_board.HasMove(player.Color))
                     {
                         _view.DisplayMsg($"{player.Color} player turn.");
                         if (player is Human)
@@ -59,14 +48,16 @@ namespace PolishDraughts.Core.Entities.Games
                         player.MakeMove();
                         _view.DisplayBoard(_board);
                     }
-                    else
-                    {
-                        // Check if the another player has a move.
-                        if (_players.First(p => p.Color != player.Color).HasMove())
-                        {
-                            winner = player.Color.Opposite();
-                        }
 
+                    if (_board.IsDraw())
+                    {
+                        isPlayed = false;
+                        break;
+                    }
+
+                    if (_board.HasWon(player.Color))
+                    {
+                        winner = player.Color;
                         isPlayed = false;
                         break;
                     }

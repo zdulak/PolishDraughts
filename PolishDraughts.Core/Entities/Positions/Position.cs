@@ -1,5 +1,5 @@
 using System;
-using PolishDraughts.Core.Entities.Boards;
+using PolishDraughts.Core.Interfaces;
 using static System.Math;
 
 namespace PolishDraughts.Core.Entities.Positions
@@ -15,7 +15,7 @@ namespace PolishDraughts.Core.Entities.Positions
         // It creates a position from a input in the algebraic notation.
         public Position(string algebraicPosition)
         {
-            Row = Board.Size - int.Parse(algebraicPosition[1..]);
+            Row = IBoard.Size - int.Parse(algebraicPosition[1..]);
             Col = Convert.ToInt32(algebraicPosition[0]) - 97;
         }
 
@@ -26,10 +26,10 @@ namespace PolishDraughts.Core.Entities.Positions
         public Position Normalize() => new Position(Row / Abs(Max(Row, Col)), Col / Abs(Max(Row, Col)));
 
         public bool IsValid() =>
-            Row >= 0 && Row < Board.Size && Col >= 0 && Col < Board.Size && Row % 2 + Col % 2 == 1;
+            Row >= 0 && Row < IBoard.Size && Col >= 0 && Col < IBoard.Size && Row % 2 + Col % 2 == 1;
 
         //Position in the algebraic notation.
-        public override string ToString() => $"{(char)(Col + 97)}{Board.Size - Row}";
+        public override string ToString() => $"{(char)(Col + 97)}{IBoard.Size - Row}";
 
         public bool Equals(Position other) => Row == other.Row && Col == other.Col;
 

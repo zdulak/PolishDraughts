@@ -12,6 +12,7 @@ namespace PolishDraughts.Core.Entities.Pieces
 
         public override bool IsCorrectJump(Position piecePosition, Position targetPosition, bool isCapturing)
         {
+            var jump = targetPosition - piecePosition;
             if (!isCapturing)
             {
                 switch (Color)
@@ -23,7 +24,7 @@ namespace PolishDraughts.Core.Entities.Pieces
                 }
             }
 
-            return MoveDirections.Contains(targetPosition - piecePosition);
+            return MoveDirections.Contains(jump);
         }
     }
 }
