@@ -20,11 +20,12 @@ namespace PolishDraughts.Core.Entities.Players
         protected override Move GetComputerMove(List<Move> moves)
         {
             Move finalMove = null;
-            var utility = Color == Color.White ? -MaxValue : MaxValue;
+            // Utility bigger than an extreme value guarantees that it will change value at least once
+            var utility = Color == Color.White ? -MaxValue - 1 : MaxValue + 1;
             foreach (var move in moves)
             {
                 Board.ApplyMove(move);
-                var moveUtility = GetMoveUtility(Color.Opposite(), 3);
+                var moveUtility = GetMoveUtility(Color.Opposite(), 4);
                 //Console.WriteLine($"Utility {moveUtility}: {move}");
                 Board.RevertMove(move);
 
@@ -54,7 +55,8 @@ namespace PolishDraughts.Core.Entities.Players
             {
                 return Utility();
             }
-
+            // The initial value of the utility equal to a defeat guarantees that
+            // no move will be excluded from considerations 
             var utility = playerColor == Color.White ? -MaxValue : MaxValue;
             foreach (var move in GetMoves(playerColor))
             {
