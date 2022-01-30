@@ -25,7 +25,7 @@ namespace PolishDraughts.Core.Entities.Players
             foreach (var move in moves)
             {
                 Board.ApplyMove(move);
-                var moveUtility = GetMoveUtility(Color.Opposite(), 4);
+                var moveUtility = GetMoveUtility(Color.Opposite(), 4, -MaxValue - 1, MaxValue + 1);
                 //Console.WriteLine($"Utility {moveUtility}: {move}");
                 Board.RevertMove(move);
 
@@ -39,7 +39,7 @@ namespace PolishDraughts.Core.Entities.Players
             return finalMove;
         }
 
-        private int GetMoveUtility(Color playerColor, int depth)
+        private int GetMoveUtility(Color playerColor, int depth, int whiteBestUtility, int blackBestUtility)
         {
             if (Board.IsDraw())
             {
@@ -61,13 +61,27 @@ namespace PolishDraughts.Core.Entities.Players
             foreach (var move in GetMoves(playerColor))
             {
                 Board.ApplyMove(move);
-                var moveUtility = GetMoveUtility(playerColor.Opposite(), depth - 1);
+                var moveUtility = GetMoveUtility(
+                    playerColor.Opposite(),
+                    depth - 1,
+                    whiteBestUtility,
+                    blackBestUtility);
                 Board.RevertMove(move);
 
-                if ((playerColor == Color.White && moveUtility > utility) ||
-                    (playerColor == Color.Black && moveUtility < utility))
+                if (playerColor == Color.White && moveUtility > utility)
                 {
                     utility = moveUtility;
+                    whiteBestUtility = Math.Max(utility, whiteBestUtility);
+                }
+                else if(playerColor == Color.Black && moveUtility < utility)
+                {
+                    utility = moveUtility;
+                    blackBestUtility = Math.Min(utility, blackBestUtility);
+                }
+
+                if (blackBestUtility < whiteBestUtility)
+                {
+                    return utility;
                 }
             }
 
