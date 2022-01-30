@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using PolishDraughts.Core.Entities.Pieces;
 using PolishDraughts.Core.Entities.Positions;
@@ -19,11 +20,13 @@ namespace PolishDraughts.Core.Entities.Players
         protected override Move GetComputerMove(List<Move> moves)
         {
             Move finalMove = null;
-            var utility = Color == Color.White ? -MaxValue : MaxValue;
+            // Utility bigger than an extreme value guarantees that it will change value at least once
+            var utility = Color == Color.White ? -MaxValue - 1 : MaxValue + 1;
             foreach (var move in moves)
             {
                 Board.ApplyMove(move);
-                var moveUtility = GetMoveUtility(Color.Opposite(), 3);
+                var moveUtility = GetMoveUtility(Color.Opposite(), 4, -MaxValue - 1, MaxValue + 1);
+                //Console.WriteLine($"Utility {moveUtility}: {move}");
                 Board.RevertMove(move);
 
                 if ((Color == Color.White && moveUtility > utility) || (Color == Color.Black && moveUtility < utility))
@@ -36,7 +39,7 @@ namespace PolishDraughts.Core.Entities.Players
             return finalMove;
         }
 
-        private int GetMoveUtility(Color playerColor, int depth)
+        private int GetMoveUtility(Color playerColor, int depth, int whiteBestUtility, int blackBestUtility)
         {
             if (Board.IsDraw())
             {
@@ -52,18 +55,33 @@ namespace PolishDraughts.Core.Entities.Players
             {
                 return Utility();
             }
-
+            // The initial value of the utility equal to a defeat guarantees that
+            // no move will be excluded from considerations 
             var utility = playerColor == Color.White ? -MaxValue : MaxValue;
-            foreach (var move in GetMoves())
+            foreach (var move in GetMoves(playerColor))
             {
                 Board.ApplyMove(move);
-                var moveUtility = GetMoveUtility(playerColor.Opposite(), depth - 1);
+                var moveUtility = GetMoveUtility(
+                    playerColor.Opposite(),
+                    depth - 1,
+                    whiteBestUtility,
+                    blackBestUtility);
                 Board.RevertMove(move);
 
-                if ((playerColor == Color.White && moveUtility > utility) ||
-                    (playerColor == Color.Black && moveUtility < utility))
+                if (playerColor == Color.White && moveUtility > utility)
                 {
                     utility = moveUtility;
+                    whiteBestUtility = Math.Max(utility, whiteBestUtility);
+                }
+                else if(playerColor == Color.Black && moveUtility < utility)
+                {
+                    utility = moveUtility;
+                    blackBestUtility = Math.Min(utility, blackBestUtility);
+                }
+
+                if (blackBestUtility < whiteBestUtility)
+                {
+                    return utility;
                 }
             }
 

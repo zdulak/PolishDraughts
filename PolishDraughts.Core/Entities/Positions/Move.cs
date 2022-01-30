@@ -11,10 +11,10 @@ namespace PolishDraughts.Core.Entities.Positions
         public override string ToString()
         {
             var path = string.Join("->", Path);
-            var captured = CapturedPositions.Zip(
+            var captured = CapturedPositions?.Zip(
                 CapturedPieces,
                 (position, piece) => $"{piece} at position {position}");
-            var capturedJoined = string.Join(", ", captured);
+            var capturedJoined = string.Join(", ", captured ??= new List<string>());
             return $"Path: {path}.  Captured pieces: {capturedJoined}.";
         }
     }

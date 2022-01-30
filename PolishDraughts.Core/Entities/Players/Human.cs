@@ -15,6 +15,12 @@ namespace PolishDraughts.Core.Entities.Players
             _controller = controller;
         }
 
+        protected override List<Move> GetMoves(Color color)
+        {
+            var piecesHavingCapture = Board.GetPlayerPiecesHavingCapture(Color);
+            return piecesHavingCapture.Count > 0 ? GetAllCaptureMoves(piecesHavingCapture) : null;
+        }
+
         protected override Move ChooseMove(List<Move> moves) => moves?.FirstOrDefault()?.CapturedPositions != null
             ? ChooseCapturePath(moves)
             : ChooseSimpleMove();

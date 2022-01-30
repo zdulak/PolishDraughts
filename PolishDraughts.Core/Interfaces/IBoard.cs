@@ -20,7 +20,7 @@ namespace PolishDraughts.Core.Interfaces
         bool CanBeCrowned(Position piecePosition, Position targetPosition);
         bool IsValidSimpleMove(Position piecePosition, Position targetPosition);
         bool HasPieceSimpleMove(Position piecePosition);
-        IEnumerable<Position> GetPieceSimpleMoves(Position piecePosition);
+        IEnumerable<Move> GetPieceSimpleMoves(Position piecePosition);
         List<Move> GetPieceAllCapturePaths(Position piecePosition);
        
         //Position? GetPiecePosition(Piece piece);

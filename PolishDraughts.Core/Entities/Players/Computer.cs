@@ -12,7 +12,7 @@ namespace PolishDraughts.Core.Entities.Players
     {
         private readonly IView _view;
 
-        public Computer(Color color, IBoard board, IView view) : base(color, board)
+        protected Computer(Color color, IBoard board, IView view) : base(color, board)
         {
             _view = view;
         }
@@ -32,28 +32,6 @@ namespace PolishDraughts.Core.Entities.Players
             }
 
             return move;
-        }
-        protected override List<Move> GetMoves()
-        {
-            var piecesHavingCapture = Board.GetPlayerPiecesHavingCapture(Color);
-            return piecesHavingCapture.Count > 0 ? GetAllCaptureMoves(piecesHavingCapture) : GetAllSimpleMoves();
-        }
-
-        protected List<Move> GetAllSimpleMoves()
-        {
-            //Local function is introduced for a code readability.
-            IEnumerable<Move> GetAllPieceMoves(Position piecePosition)
-            {
-                return Board.GetPieceSimpleMoves(piecePosition)
-                    .Select(
-                        targetPosition =>
-                            new Move(
-                                new List<Position> { piecePosition, targetPosition }.AsReadOnly(),
-                                Board.CanBeCrowned(piecePosition, targetPosition)));
-            }
-
-            var piecesWithMove = Board.GetPlayerPieces(Color).Where(p => Board.HasPieceSimpleMove(p));
-            return piecesWithMove.SelectMany(piecePosition => GetAllPieceMoves(piecePosition)).ToList();
         }
     }
 }
